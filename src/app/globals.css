@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --canvas: #FAF8F5;
+    --ink: #1C1917;
+    --card: #FFFFFF;
+    --border: #1C1917;
+  }
+
+  body {
+    background-color: var(--canvas);
+    color: var(--ink);
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+}
+
+/* Custom Soft Neobrutalism Utilities */
+.shadow-hard-sm {
+  box-shadow: 2px 2px 0px 0px #1C1917;
+}
+
+.shadow-hard {
+  box-shadow: 4px 4px 0px 0px #1C1917;
+}
+
+.shadow-hard-lg {
+  box-shadow: 6px 6px 0px 0px #1C1917;
+}
+
+.shadow-hard-xl {
+  box-shadow: 8px 8px 0px 0px #1C1917;
+}
+
+/* Tactile Button Press Effect */
+.btn-pressable {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-pressable:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 5px 5px 0px 0px #1C1917;
+}
+
+.btn-pressable:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0px 0px 0px 0px #1C1917 !important;
+}
+
+/* Subtle pattern for linen canvas */
+.bg-canvas-pattern {
+  background-color: #FAF8F5;
+  background-image: radial-gradient(#E7E5E4 0.75px, transparent 0.75px);
+  background-size: 20px 20px;
+}
