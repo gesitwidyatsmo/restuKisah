@@ -17,6 +17,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
+import LandingHeroBackground from '@/components/landing/LandingHeroBackground';
 
 export default function LandingPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -128,7 +129,8 @@ export default function LandingPage() {
 
       {/* 2. HERO SECTION */}
       <section className="relative pt-8 pb-16 sm:pt-16 sm:pb-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <LandingHeroBackground />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             {/* Pill Badge */}
             <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-amber-200 border-2 border-[#1C1917] shadow-hard-sm mb-5 text-[11px] sm:text-xs font-bold tracking-wide uppercase text-stone-900 max-w-full truncate">
@@ -398,8 +400,18 @@ export default function LandingPage() {
       </section>
 
       {/* 5. CALL TO ACTION BANNER */}
-      <section className="py-14 sm:py-20 bg-rose-100 border-b-2 border-[#1C1917]">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <section className="relative py-14 sm:py-20 bg-rose-100 border-b-2 border-[#1C1917] overflow-hidden">
+        {/* Subtle decorative dot/star pattern overlay */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-40 select-none" 
+          style={{
+            backgroundImage: 'radial-gradient(circle at center, rgba(28, 25, 23, 0.16) 1.2px, transparent 1.2px)',
+            backgroundSize: '24px 24px',
+            maskImage: 'radial-gradient(ellipse at center, black 40%, transparent 85%)',
+            WebkitMaskImage: 'radial-gradient(ellipse at center, black 40%, transparent 85%)'
+          }}
+        />
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-block p-6 sm:p-10 rounded-2xl sm:rounded-3xl bg-white border-2 sm:border-3 border-[#1C1917] shadow-hard sm:shadow-hard-lg max-w-3xl w-full">
             <h2 className="font-serif text-2xl sm:text-4xl font-bold text-[#1C1917] mb-3">
               Siap Mewujudkan Pernikahan yang Rapi & Berkesan?
