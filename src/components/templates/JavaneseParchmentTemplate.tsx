@@ -211,16 +211,16 @@ export default function JavaneseParchmentTemplate({
     setIsGununganActive(true);
     setIsPlayingMusic(true);
 
-    // Swap under the golden gunungan shroud at 1050ms
+    // Swap under the golden wash at 750ms while screen is occluded
     setTimeout(() => {
       setIsOpen(true);
-    }, 1050);
+    }, 750);
 
-    // Conclude Gunungan animation at 2200ms
+    // Conclude Gunungan animation smoothly at 1700ms
     setTimeout(() => {
       setIsGununganActive(false);
       if (onOpen) onOpen();
-    }, 2200);
+    }, 1700);
   };
 
   const handleCopy = (text: string, type: string) => {
@@ -309,7 +309,9 @@ export default function JavaneseParchmentTemplate({
       </motion.button>
 
       {/* ========================================================= */}
+      {/* ========================================================= */}
       {/* 4B. GUNUNGAN THEATRICAL OPENING CEREMONY (BEDHOL KAYON)   */}
+      {/* ULTRA-SMOOTH GPU-ACCELERATED HARDWARE OPTIMIZED           */}
       {/* ========================================================= */}
       <AnimatePresence>
         {isGununganActive && (
@@ -318,116 +320,118 @@ export default function JavaneseParchmentTemplate({
             initial={{ opacity: 1 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.55, ease: 'easeInOut' }}
-            className="fixed inset-0 z-[60] pointer-events-none flex items-center justify-center overflow-hidden"
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            className="fixed inset-0 z-[60] pointer-events-none flex items-center justify-center overflow-hidden transform-gpu"
           >
-            {/* Golden Amber Atmosphere Wash that envelops the screen */}
+            {/* 1. Golden Amber Atmosphere Wash (GPU Opacity Only, Zero Backdrop Blur) */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ 
-                opacity: [0, 0, 0.96, 0.96, 0],
+                opacity: [0, 0.96, 0.96, 0],
               }}
               transition={{ 
-                times: [0, 0.45, 0.6, 0.8, 1],
-                duration: 2.1,
+                times: [0, 0.38, 0.68, 1],
+                duration: 1.7,
                 ease: 'easeInOut'
               }}
-              className="absolute inset-0 bg-gradient-to-b from-[#FEF3C7] via-[#FDE68A] to-[#D97706]/90 backdrop-blur-md"
+              className="absolute inset-0 bg-gradient-to-b from-[#FEF3C7] via-[#FDE68A] to-[#D97706]/95"
+              style={{ willChange: 'opacity' }}
             />
 
-            {/* Glowing Golden Radial Aura Burst */}
+            {/* 2. Radiant Golden Radial Aura Burst (Zero CPU Blur, Pure Fast Gradient) */}
             <motion.div
-              initial={{ scale: 0.25, rotate: 0, opacity: 0 }}
+              initial={{ scale: 0.4, rotate: 0, opacity: 0 }}
               animate={{ 
-                scale: [0.25, 1.25, 2.6, 3.8],
-                rotate: [0, 35, 75, 120],
-                opacity: [0, 0.85, 0.95, 0]
+                scale: [0.4, 1.4, 2.4],
+                rotate: [0, 40, 80],
+                opacity: [0, 0.85, 0]
               }}
               transition={{ 
-                times: [0, 0.45, 0.7, 1],
-                duration: 2.1,
-                ease: 'easeInOut'
+                times: [0, 0.48, 1],
+                duration: 1.7,
+                ease: [0.16, 1, 0.3, 1]
               }}
-              className="absolute w-[520px] sm:w-[720px] h-[520px] sm:h-[720px] rounded-full pointer-events-none"
+              className="absolute w-[460px] sm:w-[660px] h-[460px] sm:h-[660px] rounded-full pointer-events-none"
               style={{
-                background: 'radial-gradient(circle, rgba(254, 240, 138, 0.95) 0%, rgba(217, 119, 6, 0.5) 48%, transparent 75%)',
-                filter: 'blur(25px)'
+                background: 'radial-gradient(circle, rgba(254, 240, 138, 0.9) 0%, rgba(217, 119, 6, 0.4) 45%, transparent 70%)',
+                willChange: 'transform, opacity'
               }}
             />
 
-            {/* GUNUNGAN KIRI: Masuk dari kiri dengan variasi orientasi wayang */}
+            {/* 3. GUNUNGAN KIRI: Meluncur masuk dengan ayunan anggun 60FPS */}
             <motion.div
               initial={{
-                x: '-110vw',
-                y: '6vh',
-                rotate: -28,
-                scale: 0.65,
-                opacity: 0.85
+                x: '-100vw',
+                rotate: -20,
+                scale: 0.75,
+                opacity: 0
               }}
               animate={{
-                x: ['-110vw', '-8vw', '0vw', '0vw'],
-                y: ['6vh', '-4vh', '0vh', '0vh'],
-                rotate: [-28, 16, -6, 0],
-                scale: [0.65, 1.15, 1.45, 4.4],
-                opacity: [0.85, 1, 1, 0]
+                x: ['-100vw', '-4vw', '0vw', '0vw'],
+                rotate: [-20, 8, 0, 0],
+                scale: [0.75, 1.1, 1.25, 2.4],
+                opacity: [0, 1, 1, 0]
               }}
               transition={{
-                times: [0, 0.42, 0.65, 1],
-                duration: 2.1,
-                ease: [0.22, 1, 0.36, 1]
+                times: [0, 0.42, 0.68, 1],
+                duration: 1.7,
+                ease: [0.16, 1, 0.3, 1]
               }}
-              className="absolute w-[300px] sm:w-[450px] max-w-[85vw] drop-shadow-[0_20px_40px_rgba(180,83,9,0.7)]"
+              className="absolute w-[260px] sm:w-[380px] max-w-[80vw] transform-gpu"
+              style={{ willChange: 'transform, opacity' }}
             >
               <img
                 src="/templates/jawa/gunungan.png"
                 alt="Gunungan Wayang Kiri"
-                className="w-full h-auto object-contain filter drop-shadow-[0_0_25px_rgba(251,191,36,0.85)]"
+                className="w-full h-auto object-contain"
+                loading="eager"
               />
             </motion.div>
 
-            {/* GUNUNGAN KANAN: Masuk dari kanan dengan variasi orientasi simetris */}
+            {/* 4. GUNUNGAN KANAN: Meluncur masuk simetris 60FPS */}
             <motion.div
               initial={{
-                x: '110vw',
-                y: '-6vh',
-                rotate: 28,
-                scale: 0.65,
-                opacity: 0.85
+                x: '100vw',
+                rotate: 20,
+                scale: 0.75,
+                opacity: 0
               }}
               animate={{
-                x: ['110vw', '8vw', '0vw', '0vw'],
-                y: ['-6vh', '4vh', '0vh', '0vh'],
-                rotate: [28, -16, 6, 0],
-                scale: [0.65, 1.15, 1.45, 4.4],
-                opacity: [0.85, 1, 1, 0]
+                x: ['100vw', '4vw', '0vw', '0vw'],
+                rotate: [20, -8, 0, 0],
+                scale: [0.75, 1.1, 1.25, 2.4],
+                opacity: [0, 1, 1, 0]
               }}
               transition={{
-                times: [0, 0.42, 0.65, 1],
-                duration: 2.1,
-                ease: [0.22, 1, 0.36, 1]
+                times: [0, 0.42, 0.68, 1],
+                duration: 1.7,
+                ease: [0.16, 1, 0.3, 1]
               }}
-              className="absolute w-[300px] sm:w-[450px] max-w-[85vw] drop-shadow-[0_20px_40px_rgba(180,83,9,0.7)]"
+              className="absolute w-[260px] sm:w-[380px] max-w-[80vw] transform-gpu"
+              style={{ willChange: 'transform, opacity' }}
             >
               <img
                 src="/templates/jawa/gunungan.png"
                 alt="Gunungan Wayang Kanan"
-                className="w-full h-auto object-contain filter drop-shadow-[0_0_25px_rgba(251,191,36,0.85)] scale-x-[-1]"
+                className="w-full h-auto object-contain scale-x-[-1]"
+                loading="eager"
               />
             </motion.div>
 
-            {/* EMBLEM / BANNER BEDHOL KAYON DI TENGAH */}
+            {/* 5. EMBLEM BEDHOL KAYON DI TENGAH */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.7 }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ 
-                opacity: [0, 0, 1, 1, 0],
-                scale: [0.7, 0.7, 1.05, 1.15, 1.35]
+                opacity: [0, 1, 1, 0],
+                scale: [0.8, 1.05, 1.1, 1.18]
               }}
               transition={{
-                times: [0, 0.42, 0.58, 0.78, 1],
-                duration: 2.1,
-                ease: 'easeInOut'
+                times: [0, 0.38, 0.68, 1],
+                duration: 1.7,
+                ease: [0.16, 1, 0.3, 1]
               }}
-              className="absolute z-20 text-center px-6 py-3.5 bg-[#FAF8F5]/95 border-3 border-[#1C1917] rounded-3xl shadow-hard-lg backdrop-blur-md"
+              className="absolute z-20 text-center px-6 py-3 bg-[#FAF8F5] border-2 border-[#1C1917] rounded-3xl shadow-hard-lg"
+              style={{ willChange: 'transform, opacity' }}
             >
               <span className="font-mono text-[10px] tracking-widest text-amber-900 font-extrabold uppercase block mb-0.5">
                 ✦ BEDHOL KAYON ✦
