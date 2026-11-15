@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Playfair_Display } from "next/font/google";
+import { greatVibes, cinzel, cormorantGaramond, alexBrush, lora, montserrat, amiri } from "@/lib/fonts";
 import "./globals.css";
 
 const jakartaSans = Plus_Jakarta_Sans({
@@ -36,7 +37,7 @@ export default function RootLayout({
   return (
     <html
       lang="id"
-      className={`${jakartaSans.variable} ${playfairDisplay.variable} h-full antialiased`}
+      className={`${jakartaSans.variable} ${playfairDisplay.variable} ${cinzel.variable} ${greatVibes.variable} ${cormorantGaramond.variable} ${alexBrush.variable} ${lora.variable} ${montserrat.variable} ${amiri.variable} h-full antialiased`}
     >
       <body className="min-h-full font-sans bg-canvas-pattern text-[#1C1917] selection:bg-rose-200 selection:text-rose-900">
         {children}

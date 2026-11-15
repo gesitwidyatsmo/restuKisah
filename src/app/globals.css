@@ -15,6 +15,37 @@
   }
 }
 
+/* Wedding Typography Utilities (Free for Commercial Use / SIL OFL) */
+.font-cinzel {
+  font-family: var(--font-cinzel), serif;
+}
+
+.font-script,
+.font-great-vibes {
+  font-family: var(--font-great-vibes), cursive;
+}
+
+.font-cormorant {
+  font-family: var(--font-cormorant), serif;
+}
+
+.font-lora {
+  font-family: var(--font-lora), serif;
+}
+
+.font-montserrat {
+  font-family: var(--font-montserrat), sans-serif;
+}
+
+.font-alex-brush {
+  font-family: var(--font-alex-brush), cursive;
+}
+
+.font-arabic,
+.font-amiri {
+  font-family: var(--font-amiri), 'Traditional Arabic', 'Scheherazade New', 'Noto Naskh Arabic', serif;
+}
+
 /* Custom Soft Neobrutalism Utilities */
 .shadow-hard-sm {
   box-shadow: 2px 2px 0px 0px #1C1917;

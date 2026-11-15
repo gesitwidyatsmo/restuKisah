@@ -7,8 +7,10 @@ import JavaneseParchmentTemplate from '@/components/templates/JavaneseParchmentT
 function DemoJawaContent() {
   const searchParams = useSearchParams();
   const guest = searchParams.get('to') || 'Yogi dan Ratna';
+  const coverParam = searchParams.get('cover');
+  const coverMode = coverParam === 'classic' ? 'classic_arch' : 'adat_jawa_cover';
 
-  return <JavaneseParchmentTemplate guestName={guest} />;
+  return <JavaneseParchmentTemplate guestName={guest} coverMode={coverMode} coupleTitle="Miko dan Angela" />;
 }
 
 export default function DemoJawaPage() {
