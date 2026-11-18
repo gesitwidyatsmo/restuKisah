@@ -268,11 +268,131 @@ gap-3 sm:gap-4 lg:gap-6
 
 ---
 
-## 10. Ringkasan Implementasi
+## 10. Standar Optimasi Aset Gambar & Performa Template Undangan (Image Asset & Performance Architecture)
 
-Dengan Design System **Soft Neobrutalism** dan aturan responsif ini:
-1. Pengguna di smartphone mendapatkan pengalaman satu tangan yang mulus (*drawer navigation, touch-friendly buttons*).
-2. Tampilan di tablet meja resepsi (`/check-in`) sangat stabil untuk pemindaian barcode berulang kali.
-3. Layar laptop Wedding Organizer tetap produktif dengan pemanfaatan ruang multi-kolom yang optimal.
-4. Karakter visual border 2px, hard shadow 3D, dan warna hangat tetap konsisten di segala dimensi layar.
+Pengalaman pertama calon pengantin maupun tamu undangan sangat ditentukan oleh kecepatan saat membuka link website di smartphone (biasanya via WhatsApp atau Instagram). Jika cover undangan membutuhkan waktu lebih dari 2 detik untuk muncul, konversi penjualan template akan turun drastis dan pengguna menganggap website "berat".
+
+Standar ini wajib menjadi **acuan baku** bagi setiap pembuatan template undangan baru di RestuKisah.
+
+```mermaid
+flowchart TD
+    Raw["1. File Desain Mentah (Figma / PSD / Midjourney / 2K-4K)"] --> Slicing{"2. Analisis Animasi"}
+    
+    Slicing -->|"Statis (Tak Bergerak)"| Bake["Gabungkan Jadi 1 Layer Komposit (Bake)"]
+    Slicing -->|"Dinamis (Breathing / Ayunan / Floating)"| Slice["Ekspor Layer Terpisah"]
+    
+    Bake --> RightSize["3. Right-Sizing Resolusi (Max Width 400px - 640px)"]
+    Slice --> RightSize
+    
+    RightSize --> FormatChoice{"4. Pemilihan Format"}
+    FormatChoice -->|"Garis / Divider / Siluet"| SVG["SVG (5 - 15 KB, 100% Vector)"]
+    FormatChoice -->|"Foto / Ornamen Alpha Transparan"| WebP["WebP Lossy (Q80 - Q82, Effort 4)"]
+    FormatChoice -->|"Supported Next.js CDN"| AVIF["AVIF (Otomatis via next/image)"]
+    
+    SVG --> Dist["5. Tempatkan di Folder Terstruktur (/public/templates/[tema]/)"]
+    WebP --> Dist
+    AVIF --> Dist
+    
+    Dist --> Render["6. Implementasi Komponen (loading='eager', fetchPriority='high' pada LCP)"]
+```
+
+### 10.1 Matriks Pemilihan Format Gambar
+
+| Tipe Aset | Format Standar | Target Ukuran | Alasan Teknis |
+| :--- | :--- | :--- | :--- |
+| **Ornamen Garis, Divider, Logo, Gunungan Siluet** | **SVG** *(Vector)* | **< 15 KB** | Bebas artefak kompresi, tajam sempurna di layar Retina/OLED 4K, ukuran file mikro. |
+| **Layer Frame Statis & Latar Belakang** | **WebP (Lossy Q80)** | **< 130 KB** | Gradasi warna dan tekstur kayu/kertas halus, kompresi 30% lebih hemat dari JPEG. |
+| **Foto Pengantin & Elemen Bergerak** | **WebP (Lossy Q82)** | **< 95 KB** | Menjaga detail wajah & busana adat, mendukung *alpha transparency* (transparansi latar). |
+| **Foto Galeri & Album Kenangan** | **WebP (Lossy Q80)** | **< 120 KB** | Resolusi cukup 600px–800px, dimuat secara *lazy-loading*. |
+
+> [!WARNING]
+> **Larangan Format:** Dilarang menggunakan format **PNG murni berukuran besar (> 300 KB)** untuk aset produksi di folder `public/`. PNG bitmap menghasilkan ukuran file 3–5x lebih boros bandwidth dibanding WebP dan menyebabkan lag pada GPU smartphone saat proses dekompresi tekstur transparan.
+
+---
+
+### 10.2 Standar Struktur Folder Aset Template
+
+Setiap template undangan baru wajib mengorganisasi asetnya secara modular di bawah folder `public/templates/[slug_tema]/`:
+
+```
+public/templates/[nama_tema]/
+├── cover/         # Aset khusus sampul layar penuh beranimasi (Max total cover: < 600 KB)
+│   ├── bg-parchment.webp       # Background tekstur dasar
+│   ├── gebyok-gateway.webp     # Frame lengkung utama (atau frame komposit)
+│   ├── groom-full.webp         # Karakter pria (alpha transparan, max lebar 300px)
+│   ├── bride-full.webp         # Karakter wanita (alpha transparan, max lebar 280px)
+│   ├── lantern.webp            # Aksesori ayunan (max lebar 140px, < 10 KB)
+│   ├── garland-melati.webp     # Ronce gantung (max lebar 100px, < 8 KB)
+│   └── divider.webp            # Pembatas tengah (max lebar 400px, < 16 KB)
+├── hero/          # Aset bagian hero profile & hitung mundur
+│   ├── portrait-couple.webp    # Foto utama mempelai berdua
+│   ├── frame-baroque-gold.webp # Bingkai foto hero
+│   ├── countdown-box.webp      # Kotak angka countdown
+│   └── plaque-save-date.webp   # Plakat tombol save the date
+├── profile/       # Aset biodata mempelai pria & wanita
+│   ├── bride-portrait.webp     # Foto close-up wanita (max lebar 500px)
+│   ├── groom-portrait.webp     # Foto close-up pria (max lebar 500px)
+│   └── floral-accents.webp     # Rangkaian bunga sudut
+├── quote/         # Aset ayat suci / surat undangan
+│   └── quote-frame.webp        # Bingkai naskah kutipan
+└── common/        # Aset yang digunakan bersama lintas section
+    ├── emblem-logo.webp        # Logo/gunungan tema
+    └── cover-bg.jpg            # Backdrop blur fallback
+```
+
+> [!IMPORTANT]
+> **Kebijakan Kebersihan Folder Publik:**
+> Folder `public/` hanya diperuntukkan bagi **aset produksi aktif**. Semua file mentahan eksperimen, screenshot perbandingan, hasil crop debug, atau file pengujian PSD/PNG **wajib dipindahkan ke `docs/archive-test-assets/`** agar tidak memperbesar ukuran build produksi dan beban repository git.
+
+---
+
+### 10.3 Performance Budget & Batas Dimensi Ekspor (Right-Sizing)
+
+Layar smartphone memiliki lebar umum antara **360px hingga 430px**. Pada rasio piksel device (DPR 2x), lebar aset maksimal tidak pernah membutuhkan lebih dari **860px**.
+
+| Jenis Elemen di Layar | Lebar Tampilan CSS | Dimensi Ekspor Maksimal | Target File Size |
+| :--- | :--- | :--- | :--- |
+| **Full Screen Backdrop** | `100vw` (~430px) | `600px – 720px` width | **15 – 35 KB** |
+| **Bingkai / Gateway Utama** | `100%` (~430px) | `640px` width | **80 – 130 KB** |
+| **Foto Pengantin Full Body** | `h-[58%]` (~200px) | `280px – 300px` width | **60 – 90 KB** |
+| **Foto Portret Profil (Lingkaran/Arch)** | `~180px` | `500px` width | **60 – 95 KB** |
+| **Ornamen Sedang (Crest / Plakat)** | `~140px – 220px` | `380px – 480px` width | **18 – 30 KB** |
+| **Aksesori Kecil (Lentera, Ronce Melati)** | `~20px – 45px` | `80px – 140px` width | **5 – 10 KB** |
+| **Pembatas Garis / Divider** | `~120px – 180px` | `360px – 400px` width | **10 – 16 KB** |
+
+---
+
+### 10.4 Aturan Layering: "Baking" vs "Dynamic Slicing"
+
+Saat merancang animasi di Framer Motion:
+1. **Aturan Baking (Penggabungan Layer Statis):**
+   * Jika dua elemen visual atau lebih sama-sama **statis** (tidak memiliki animasi translasi, rotasi, atau scaling independen), **wajib digabungkan menjadi 1 gambar komposit**.
+   * *Contoh:* Latar kertas + pilar gebyok + lis batas bawah dapat digabung menjadi satu file `cover-frame-base.webp`. Ini memangkas 3 request HTTP menjadi 1 request tunggal.
+2. **Aturan Dynamic Slicing (Layer Terpisah):**
+   * Pisahkan gambar menjadi layer independen **hanya** jika elemen tersebut memerlukan animasi gerak fisik:
+     * *Breathing motion:* Mempelai pria dan wanita (`y: [-3, 3, -3]`).
+     * *Pendulum sway:* Lentera dan ronce melati (`rotate: [-2.5, 2.5, -2.5]`).
+     * *Atmosphere depth:* Partikel canvas yang harus berada di z-index antara latar dan gerbang kayu.
+
+---
+
+### 10.5 Checklist Implementasi Kode Komponen
+
+Setiap komponen undangan yang memuat gambar wajib mematuhi standar berikut:
+
+* [ ] **LCP Critical Priority:** Aset pada layar pertama (sampul modal) wajib menyertakan atribut `loading="eager"` dan `fetchPriority="high"`.
+* [ ] **Lazy Loading untuk Konten Bawah:** Semua gambar di bawah fold (Hero, Profil, Kutipan, Galeri) wajib memakai `loading="lazy"`.
+* [ ] **Pencegahan Layout Shift (CLS):** Setiap pembungkus gambar wajib mendefinisikan rasio aspek eksplisit (`aspect-[w/h]`) atau kelas Tailwind yang mengunci dimensi kontainer sebelum gambar selesai di-render.
+* [ ] **Path Terstandarisasi:** Menggunakan path terstruktur bebas spasi (contoh: `/templates/jawa/cover/...` bukan `/adat jawa cover/...`).
+* [ ] **Pembersihan Skrip Otomatis:** Menjalankan script optimasi `sharp` (WebP Q82) sebelum setiap rilis template baru untuk memastikan tidak ada aset mentah berukuran megabyte yang lolos ke produksi.
+
+---
+
+## 11. Ringkasan Implementasi Seluruh Sistem Desain
+
+Dengan integrasi Design System **Soft Neobrutalism**, **Multi-Device Ergonomics**, serta **Arsitektur Optimasi Aset Gambar**:
+1. **Pengalaman Pengantin & WO (Dashboard):** Antarmuka terasa taktil dan menyenangkan seperti papan permainan (*gamified checklist & budget*) dengan tombol interaktif 3D yang ergonomis di layar ponsel maupun desktop.
+2. **Pengalaman Tamu Undangan (Public Invitation):** Undangan terbuka instan (< 1 detik) di jaringan 4G smartphone dengan konsumsi data hemat (< 1.5 MB untuk seluruh halaman), visual berwibawa khas nusantara, serta animasi gerak yang ringan di GPU/VRAM.
+3. **Standar Rekayasa Jangka Panjang:** Tim pengembang memiliki panduan jelas mengenai pembuatan token warna, tipografi, batas ukuran file, serta struktur direktori yang rapi dan skalabel untuk seluruh koleksi template RestuKisah berikutnya.
+
 

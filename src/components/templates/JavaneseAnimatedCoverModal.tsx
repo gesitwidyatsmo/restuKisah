@@ -156,8 +156,10 @@ export default function JavaneseAnimatedCoverModal({
             {/* ------------------------------------------------------------- */}
             <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
               <img
-                src="/adat-jawa-cover/cover/bg-parchment.webp"
+                src="/templates/jawa/cover/bg-parchment.webp"
                 alt="Parchment Background"
+                loading="eager"
+                fetchPriority="high"
                 className="w-full h-full object-cover"
               />
               {/* Radial Center Warm Glow */}
@@ -176,8 +178,10 @@ export default function JavaneseAnimatedCoverModal({
             {/* ------------------------------------------------------------- */}
             <div className="absolute inset-0 w-full h-full pointer-events-none z-15">
               <img
-                src="/adat-jawa-cover/cover/gebyok-gateway.webp"
+                src="/templates/jawa/cover/gebyok-gateway.webp"
                 alt="Ornate Gebyok Wooden Gateway"
+                loading="eager"
+                fetchPriority="high"
                 className="w-full h-full object-fill object-top"
               />
             </div>
@@ -192,8 +196,9 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-0 left-1/2 -translate-x-1/2 w-[50%] pointer-events-none z-35 opacity-85 filter brightness-[0.88] contrast-[0.92]"
             >
               <img
-                src="/adat-jawa-cover/cover/crest-top.webp"
+                src="/templates/jawa/cover/crest-top.webp"
                 alt="Ornate Golden Wood Crest"
+                loading="eager"
                 className="w-full h-auto object-contain drop-shadow-[0_2px_4px_rgba(0,0,0,0.25)]"
               />
             </motion.div>
@@ -210,8 +215,9 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-0 left-0 w-[42%] pointer-events-none z-30 opacity-88 filter brightness-[0.92] contrast-[0.94]"
             >
               <img
-                src="/adat-jawa-cover/cover/curtain-left.webp"
+                src="/templates/jawa/cover/curtain-left.webp"
                 alt="Batik Curtain Left"
+                loading="eager"
                 className="w-full h-auto object-contain"
               />
             </motion.div>
@@ -224,8 +230,9 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-0 right-0 w-[42%] pointer-events-none z-30 opacity-88 filter brightness-[0.92] contrast-[0.94]"
             >
               <img
-                src="/adat-jawa-cover/cover/curtain-right.webp"
+                src="/templates/jawa/cover/curtain-right.webp"
                 alt="Batik Curtain Right"
+                loading="eager"
                 className="w-full h-auto object-contain"
               />
             </motion.div>
@@ -248,7 +255,7 @@ export default function JavaneseAnimatedCoverModal({
                 className="absolute top-[35%] left-[20%] w-[60%] h-[40%] bg-amber-400 rounded-full blur-md"
               />
               <img
-                src="/adat-jawa-cover/cover/lantern.webp"
+                src="/templates/jawa/cover/lantern.webp"
                 alt="Ornate Javanese Brass Lantern Left"
                 className="w-full h-auto object-contain relative z-10"
               />
@@ -262,7 +269,7 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-[13.5%] left-[0.5%] w-[4.5%] pointer-events-none z-31"
             >
               <img
-                src="/adat-jawa-cover/cover/garland-melati.webp"
+                src="/templates/jawa/cover/garland-melati.webp"
                 alt="Bridal Jasmine Garland Left"
                 className="w-full h-auto object-contain"
               />
@@ -282,7 +289,7 @@ export default function JavaneseAnimatedCoverModal({
                 className="absolute top-[35%] left-[20%] w-[60%] h-[40%] bg-amber-400 rounded-full blur-md"
               />
               <img
-                src="/adat-jawa-cover/cover/lantern.webp"
+                src="/templates/jawa/cover/lantern.webp"
                 alt="Ornate Javanese Brass Lantern Right"
                 className="w-full h-auto object-contain relative z-10 scale-x-[-1]"
               />
@@ -296,7 +303,7 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-[13.5%] right-[0.5%] w-[4.5%] pointer-events-none z-31"
             >
               <img
-                src="/adat-jawa-cover/cover/garland-melati.webp"
+                src="/templates/jawa/cover/garland-melati.webp"
                 alt="Bridal Jasmine Garland Right"
                 className="w-full h-auto object-contain scale-x-[-1]"
               />
@@ -329,8 +336,9 @@ export default function JavaneseAnimatedCoverModal({
                 {/* Ornamen Pembatas Emas Halus (Ukuran diperkecil 32% agar ringan) */}
                 <div className="w-[32%] mt-1 opacity-80 filter brightness-95 drop-shadow-[0_2px_5px_rgba(0,0,0,0.8)]">
                   <img
-                    src="/adat-jawa-cover/cover/divider.webp"
+                    src="/templates/jawa/cover/divider.webp"
                     alt="Golden Baroque Divider"
+                    loading="eager"
                     className="w-full h-auto object-contain"
                   />
                 </div>
@@ -353,8 +361,10 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-[29.5%] right-[49.5%] h-[58%] pointer-events-none z-22 flex justify-end"
             >
               <img
-                src="/adat-jawa-cover/cover/groom-full.webp"
+                src="/templates/jawa/cover/groom-full.webp"
                 alt="Javanese Groom in Ornate Beskap Full Body"
+                loading="eager"
+                fetchPriority="high"
                 className="h-full w-auto object-contain drop-shadow-md"
               />
             </motion.div>
@@ -369,8 +379,10 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-[29.5%] left-[49.5%] h-[58%] pointer-events-none z-22 flex justify-start"
             >
               <img
-                src="/adat-jawa-cover/cover/bride-full.webp"
+                src="/templates/jawa/cover/bride-full.webp"
                 alt="Javanese Bride in Golden Paes Ageng Attire Full Body"
+                loading="eager"
+                fetchPriority="high"
                 className="h-full w-auto object-contain drop-shadow-md"
               />
             </motion.div>
@@ -381,8 +393,9 @@ export default function JavaneseAnimatedCoverModal({
             {/* Kain Batik Dasar Melengkung */}
             <div className="absolute bottom-0 left-0 w-full pointer-events-none z-23">
               <img
-                src="/adat-jawa-cover/cover/border-bottom.webp"
+                src="/templates/jawa/cover/border-bottom.webp"
                 alt="Luxurious Javanese Batik Draped Border"
+                loading="eager"
                 className="w-full h-auto object-contain"
               />
             </div>
@@ -397,7 +410,7 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute top-[66%] left-1/2 -translate-x-1/2 w-[72%] pointer-events-none z-26"
             >
               <img
-                src="/adat-jawa-cover/cover/flowers-bottom.webp"
+                src="/templates/jawa/cover/flowers-bottom.webp"
                 alt="White Jasmine and Plumeria Garland Arrangement"
                 className="w-full h-auto object-contain drop-shadow-md"
               />
@@ -416,7 +429,7 @@ export default function JavaneseAnimatedCoverModal({
               className="absolute bottom-[1%] left-1/2 -translate-x-1/2 w-[34%] pointer-events-none z-27"
             >
               <img
-                src="/adat-jawa-cover/cover/carving-bottom.webp"
+                src="/templates/jawa/cover/carving-bottom.webp"
                 alt="Gilded Javanese Floral Wood Carving"
                 className="w-full h-auto object-contain"
               />

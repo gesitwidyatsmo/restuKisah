@@ -6,6 +6,7 @@ import { Sparkles, Volume2, VolumeX } from 'lucide-react';
 import JavaneseAnimatedCoverModal from './JavaneseAnimatedCoverModal';
 import RoyalJavaneseHeroCountdown from './jawa/RoyalJavaneseHeroCountdown';
 import RoyalJavaneseQuoteOpening from './jawa/RoyalJavaneseQuoteOpening';
+import RoyalJavaneseBrideGroomProfile from './jawa/RoyalJavaneseBrideGroomProfile';
 
 interface JavaneseParchmentTemplateProps {
   guestName?: string;
@@ -14,6 +15,7 @@ interface JavaneseParchmentTemplateProps {
   weddingDate?: string;
   heroImage?: string;
   coverMode?: 'adat_jawa_cover' | 'classic_arch';
+  initialOpen?: boolean;
 }
 
 export default function JavaneseParchmentTemplate({
@@ -22,9 +24,10 @@ export default function JavaneseParchmentTemplate({
   coupleTitle = 'Miko dan Angela',
   weddingDate = 'Saturday, 21 June 2025',
   heroImage = '/templates/jawa/hero/portrait-couple.webp',
-  coverMode = 'adat_jawa_cover'
+  coverMode = 'adat_jawa_cover',
+  initialOpen = false,
 }: JavaneseParchmentTemplateProps) {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(initialOpen);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [isGununganActive, setIsGununganActive] = useState(false);
 
@@ -430,7 +433,7 @@ export default function JavaneseParchmentTemplate({
           /* =================================================================== */
           <motion.div 
             key="invitation-hero-sheet"
-            initial={{ opacity: 0, scale: 0.96, y: 24 }}
+            initial={false}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 24 }}
             transition={{ duration: 0.75, ease: [0.16, 1, 0.3, 1] }}
@@ -449,6 +452,11 @@ export default function JavaneseParchmentTemplate({
             {/* SECTION 02: ROYAL JAVANESE QUOTE & OPENING PRAYER */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseQuoteOpening />
+            </div>
+
+            {/* SECTION 03: ROYAL JAVANESE BRIDE & GROOM PROFILES */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseBrideGroomProfile />
             </div>
 
             {/* Subtle Return to Cover Navigation */}

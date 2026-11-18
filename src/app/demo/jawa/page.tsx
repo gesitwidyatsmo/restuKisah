@@ -9,8 +9,16 @@ function DemoJawaContent() {
   const guest = searchParams.get('to') || 'Yogi dan Ratna';
   const coverParam = searchParams.get('cover');
   const coverMode = coverParam === 'classic' ? 'classic_arch' : 'adat_jawa_cover';
+  const openParam = searchParams.get('open') === 'true';
 
-  return <JavaneseParchmentTemplate guestName={guest} coverMode={coverMode} coupleTitle="Miko dan Angela" />;
+  return (
+    <JavaneseParchmentTemplate
+      guestName={guest}
+      coverMode={coverMode}
+      coupleTitle="Miko dan Angela"
+      initialOpen={openParam}
+    />
+  );
 }
 
 export default function DemoJawaPage() {
