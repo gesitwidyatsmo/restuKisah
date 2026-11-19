@@ -21,8 +21,6 @@ export const cinzel = Cinzel({
 });
 
 export const cormorantGaramond = Cormorant_Garamond({
-  weight: ['400', '600', '700'],
-  style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-cormorant',
@@ -36,15 +34,12 @@ export const alexBrush = Alex_Brush({
 });
 
 export const lora = Lora({
-  weight: ['400', '500', '600', '700'],
-  style: ['normal', 'italic'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-lora',
 });
 
 export const montserrat = Montserrat({
-  weight: ['400', '500', '600', '700', '800'],
   subsets: ['latin'],
   display: 'swap',
   variable: '--font-montserrat',

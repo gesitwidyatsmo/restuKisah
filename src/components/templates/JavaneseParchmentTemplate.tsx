@@ -1,12 +1,15 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Volume2, VolumeX } from 'lucide-react';
 import JavaneseAnimatedCoverModal from './JavaneseAnimatedCoverModal';
 import RoyalJavaneseHeroCountdown from './jawa/RoyalJavaneseHeroCountdown';
 import RoyalJavaneseQuoteOpening from './jawa/RoyalJavaneseQuoteOpening';
 import RoyalJavaneseBrideGroomProfile from './jawa/RoyalJavaneseBrideGroomProfile';
+import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
+import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
+import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
 
 interface JavaneseParchmentTemplateProps {
   guestName?: string;
@@ -16,6 +19,9 @@ interface JavaneseParchmentTemplateProps {
   heroImage?: string;
   coverMode?: 'adat_jawa_cover' | 'classic_arch';
   initialOpen?: boolean;
+  particleEffect?: ParticleEffectType;
+  burstEffect?: BurstEffectType;
+  showEffectSwitcher?: boolean;
 }
 
 export default function JavaneseParchmentTemplate({
@@ -26,116 +32,24 @@ export default function JavaneseParchmentTemplate({
   heroImage = '/templates/jawa/hero/portrait-couple.webp',
   coverMode = 'adat_jawa_cover',
   initialOpen = false,
+  particleEffect = 'pink_blossoms',
+  burstEffect = 'gold_butterflies',
+  showEffectSwitcher = true,
 }: JavaneseParchmentTemplateProps) {
   const [isOpen, setIsOpen] = useState(initialOpen);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [isGununganActive, setIsGununganActive] = useState(false);
 
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  // Configurable Effects
+  const [currentParticle, setCurrentParticle] = useState<ParticleEffectType>(particleEffect);
+  const [currentBurst, setCurrentBurst] = useState<BurstEffectType>(burstEffect);
+  const [burstActive, setBurstActive] = useState(false);
+  const [burstOrigin, setBurstOrigin] = useState<{ x: number; y: number } | undefined>(undefined);
+
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   // Parallax Offset
   const [mouseOffset, setMouseOffset] = useState({ x: 0, y: 0 });
-
-  // 1. Interactive Falling Jasmine Petals & Golden Glow
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || window.innerWidth);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || window.innerHeight);
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = canvas.parentElement?.clientWidth || window.innerWidth;
-      height = canvas.height = canvas.parentElement?.clientHeight || window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    const petals: Array<{
-      x: number;
-      y: number;
-      size: number;
-      speedY: number;
-      speedX: number;
-      rotation: number;
-      rotationSpeed: number;
-      opacity: number;
-      type: 'jasmine' | 'gold_dust';
-    }> = [];
-
-    // Create mixture of white jasmine petals & floating gold micro-dust
-    for (let i = 0; i < 24; i++) {
-      petals.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        size: Math.random() * 7 + 4,
-        speedY: Math.random() * 0.7 + 0.35,
-        speedX: Math.sin(Math.random() * Math.PI) * 0.45 - 0.22,
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 1.5,
-        opacity: Math.random() * 0.55 + 0.35,
-        type: i % 4 === 0 ? 'gold_dust' : 'jasmine'
-      });
-    }
-
-    const draw = () => {
-      ctx.clearRect(0, 0, width, height);
-
-      petals.forEach((p) => {
-        p.y += p.speedY;
-        p.x += p.speedX + Math.sin(p.y * 0.008) * 0.35;
-        p.rotation += p.rotationSpeed;
-
-        if (p.y > height + 20) {
-          p.y = -20;
-          p.x = Math.random() * width;
-        }
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate((p.rotation * Math.PI) / 180);
-
-        if (p.type === 'jasmine') {
-          // Delicate White Jasmine Petal
-          ctx.beginPath();
-          ctx.ellipse(0, 0, p.size * 0.55, p.size, 0, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(255, 253, 245, ${p.opacity * 0.9})`;
-          ctx.shadowColor = 'rgba(217, 119, 6, 0.25)';
-          ctx.shadowBlur = 4;
-          ctx.fill();
-
-          // Soft yellow-gold petal core
-          ctx.beginPath();
-          ctx.arc(0, 0, p.size * 0.18, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(245, 158, 11, ${p.opacity * 0.6})`;
-          ctx.fill();
-        } else {
-          // Shimmering Golden Dust Fleck
-          ctx.beginPath();
-          ctx.arc(0, 0, p.size * 0.25, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(251, 191, 36, ${p.opacity * 0.95})`;
-          ctx.shadowColor = 'rgba(245, 158, 11, 0.8)';
-          ctx.shadowBlur = 6;
-          ctx.fill();
-        }
-
-        ctx.restore();
-      });
-
-      animationId = requestAnimationFrame(draw);
-    };
-
-    draw();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationId);
-    };
-  }, []);
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!containerRef.current) return;
@@ -145,7 +59,11 @@ export default function JavaneseParchmentTemplate({
     setMouseOffset({ x: x * -16, y: y * -16 });
   };
 
-  const handleOpenInvitation = () => {
+  const handleOpenInvitation = (origin?: { x: number; y: number }) => {
+    if (origin) {
+      setBurstOrigin(origin);
+    }
+    setBurstActive(true);
     setIsGununganActive(true);
     setIsPlayingMusic(true);
 
@@ -195,10 +113,18 @@ export default function JavaneseParchmentTemplate({
         }}
       />
 
-      {/* 3. PARTICLES CANVAS (Jasmine Petals & Gold Dust) */}
-      <canvas 
-        ref={canvasRef} 
-        className="fixed inset-0 w-full h-full pointer-events-none z-10"
+      {/* 3. PARTICLES CANVAS (CONFIGURABLE: PINK BLOSSOMS DEFAULT) */}
+      <FallingParticlesCanvas 
+        type={currentParticle}
+        className="fixed inset-0 w-full h-full pointer-events-none z-10" 
+      />
+
+      {/* 3B. OPENING BURST EFFECT (GOLD BUTTERFLIES DEFAULT) */}
+      <OpeningBurstEffect
+        isActive={burstActive}
+        type={currentBurst}
+        origin={burstOrigin}
+        onComplete={() => setBurstActive(false)}
       />
 
       {/* 4. FLOATING MUSIC CONTROLLER */}
@@ -351,10 +277,12 @@ export default function JavaneseParchmentTemplate({
             <JavaneseAnimatedCoverModal 
               key="cover-modal-animated"
               isOpen={isOpen}
-              onOpen={handleOpenInvitation}
+              onOpen={(origin) => handleOpenInvitation(origin)}
               guestName={guestName}
               coupleTitle={coupleTitle}
               weddingDate={weddingDate}
+              particleType={currentParticle}
+              burstType={currentBurst}
             />
           ) : (
             <motion.div 
@@ -417,7 +345,7 @@ export default function JavaneseParchmentTemplate({
                   <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    onClick={handleOpenInvitation}
+                    onClick={(e) => handleOpenInvitation({ x: e.clientX, y: e.clientY })}
                     className="w-full py-3.5 text-sm font-bold bg-gradient-to-r from-amber-500 via-amber-600 to-amber-500 hover:from-amber-600 text-white border-2 border-[#1C1917] rounded-2xl shadow-md btn-pressable flex items-center justify-center gap-2 group"
                   >
                     <Sparkles className="w-4 h-4 group-hover:rotate-12 transition-transform" />
@@ -467,6 +395,7 @@ export default function JavaneseParchmentTemplate({
                 onClick={() => {
                   setIsOpen(false);
                   setIsGununganActive(false);
+                  setBurstActive(false);
                 }}
                 className="inline-flex items-center gap-2 px-5 py-2.5 text-xs font-semibold text-[#65422F] hover:text-[#392319] bg-[#FFF9F0]/90 hover:bg-[#FFF9F0] border border-[#B58A45]/40 rounded-full shadow-sm transition-all duration-200"
               >
@@ -476,6 +405,22 @@ export default function JavaneseParchmentTemplate({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* 7. EFFECT SWITCHER PILL (Interactive options selector) */}
+      {showEffectSwitcher && (
+        <EffectSwitcherPill
+          particleType={currentParticle}
+          onSelectParticle={(p) => setCurrentParticle(p)}
+          burstType={currentBurst}
+          onSelectBurst={(b) => setCurrentBurst(b)}
+          isInvitationOpen={isOpen}
+          onResetInvitation={() => {
+            setIsOpen(false);
+            setIsGununganActive(false);
+            setBurstActive(false);
+          }}
+        />
+      )}
     </div>
   );
 }

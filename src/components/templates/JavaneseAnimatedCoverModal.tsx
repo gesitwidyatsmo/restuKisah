@@ -1,13 +1,14 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Sparkles, Heart, Music, Volume2, VolumeX, Eye } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
+import { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 
 export interface JavaneseAnimatedCoverModalProps {
   isOpen: boolean;
-  onOpen: () => void;
+  onOpen: (origin?: { x: number; y: number }) => void;
   guestName?: string;
   coupleTitle?: string;
   weddingDate?: string;
@@ -15,6 +16,8 @@ export interface JavaneseAnimatedCoverModalProps {
   enableAudioToggle?: boolean;
   isPlayingMusic?: boolean;
   onToggleMusic?: () => void;
+  particleType?: ParticleEffectType;
+  burstType?: BurstEffectType;
 }
 
 export default function JavaneseAnimatedCoverModal({
@@ -26,100 +29,14 @@ export default function JavaneseAnimatedCoverModal({
   enableParallax = false,
   enableAudioToggle = false,
   isPlayingMusic = false,
-  onToggleMusic
+  onToggleMusic,
+  particleType = 'pink_blossoms',
+  burstType = 'gold_butterflies'
 }: JavaneseAnimatedCoverModalProps) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Falling Jasmine Petals & Gold Sparkle Dust Canvas
-  useEffect(() => {
-    if (isOpen) return; // Stop animation when modal is opened
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animId: number;
-    let width = (canvas.width = canvas.parentElement?.clientWidth || 400);
-    let height = (canvas.height = canvas.parentElement?.clientHeight || 600);
-
-    const handleResize = () => {
-      if (!canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Particle Array
-    const petals = Array.from({ length: 18 }, () => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      size: Math.random() * 5 + 3,
-      speedY: Math.random() * 0.8 + 0.4,
-      speedX: (Math.random() - 0.5) * 0.5,
-      rotation: Math.random() * Math.PI * 2,
-      rotationSpeed: (Math.random() - 0.5) * 0.03,
-      opacity: Math.random() * 0.5 + 0.35,
-      isGold: Math.random() > 0.6
-    }));
-
-    const render = () => {
-      ctx.clearRect(0, 0, width, height);
-      for (const p of petals) {
-        p.y += p.speedY;
-        p.x += Math.sin(p.y * 0.02) * 0.4 + p.speedX;
-        p.rotation += p.rotationSpeed;
-
-        if (p.y > height + 10) {
-          p.y = -10;
-          p.x = Math.random() * width;
-        }
-
-        ctx.save();
-        ctx.translate(p.x, p.y);
-        ctx.rotate(p.rotation);
-        ctx.globalAlpha = p.opacity;
-
-        if (p.isGold) {
-          // Radiant gold dust
-          const grad = ctx.createRadialGradient(0, 0, 0, 0, 0, p.size);
-          grad.addColorStop(0, 'rgba(254, 240, 138, 0.9)');
-          grad.addColorStop(1, 'rgba(217, 119, 6, 0)');
-          ctx.fillStyle = grad;
-          ctx.beginPath();
-          ctx.arc(0, 0, p.size, 0, Math.PI * 2);
-          ctx.fill();
-        } else {
-          // Delicate White Melati Petal
-          ctx.fillStyle = '#FFFDF7';
-          ctx.strokeStyle = 'rgba(217, 119, 6, 0.2)';
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.ellipse(0, 0, p.size * 0.7, p.size * 1.2, 0, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.stroke();
-        }
-        ctx.restore();
-      }
-      animId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      cancelAnimationFrame(animId);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [isOpen]);
-
-  const handleOpenClick = () => {
-    confetti({
-      particleCount: 80,
-      spread: 75,
-      origin: { y: 0.75 },
-      colors: ['#D97706', '#F59E0B', '#FDE68A', '#FEF3C7', '#78350F']
-    });
-    onOpen();
+  const handleOpenClick = (e: React.MouseEvent) => {
+    onOpen({ x: e.clientX, y: e.clientY });
   };
 
   return (
@@ -166,9 +83,9 @@ export default function JavaneseAnimatedCoverModal({
               <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_45%,_rgba(255,255,255,0.7)_0%,_rgba(254,243,199,0.3)_50%,_rgba(180,83,9,0.15)_100%)] pointer-events-none" />
             </div>
 
-            {/* PARTICLES CANVAS (JASMINE & GOLD DUST) */}
-            <canvas
-              ref={canvasRef}
+            {/* PARTICLES CANVAS (CONFIGURABLE) */}
+            <FallingParticlesCanvas
+              type={particleType}
               className="absolute inset-0 w-full h-full pointer-events-none z-10"
             />
 
