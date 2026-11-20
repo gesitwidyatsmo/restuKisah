@@ -8,6 +8,7 @@ import RoyalJavaneseHeroCountdown from './jawa/RoyalJavaneseHeroCountdown';
 import RoyalJavaneseQuoteOpening from './jawa/RoyalJavaneseQuoteOpening';
 import RoyalJavaneseBrideGroomProfile from './jawa/RoyalJavaneseBrideGroomProfile';
 import RoyalJavaneseWeddingEventsLocation from './jawa/RoyalJavaneseWeddingEventsLocation';
+import RoyalJavaneseLoveStory from './jawa/RoyalJavaneseLoveStory';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -395,6 +396,11 @@ export default function JavaneseParchmentTemplate({
               <RoyalJavaneseWeddingEventsLocation 
                 cardFrameImage="/adat-jawa-cover/Ornate Ivory Gold Floral Banner.webp"
               />
+            </div>
+
+            {/* SECTION 05: ROYAL JAVANESE OUR LOVE STORY TIMELINE */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseLoveStory />
             </div>
 
             {/* Subtle Return to Cover Navigation */}
