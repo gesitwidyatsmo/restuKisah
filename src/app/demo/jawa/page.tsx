@@ -1,10 +1,22 @@
 'use client';
 
 import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
-import JavaneseParchmentTemplate from '@/components/templates/JavaneseParchmentTemplate';
 import { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
+
+const JavaneseParchmentTemplate = dynamic(
+  () => import('@/components/templates/JavaneseParchmentTemplate'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center font-serif text-[#8C6D46] font-bold">
+        Memuat Undangan...
+      </div>
+    ),
+  }
+);
 
 function DemoJawaContent() {
   const searchParams = useSearchParams();

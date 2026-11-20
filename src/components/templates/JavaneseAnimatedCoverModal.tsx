@@ -58,6 +58,7 @@ export default function JavaneseAnimatedCoverModal({
           {/* ========================================================================= */}
           <motion.div
             ref={containerRef}
+            suppressHydrationWarning
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ 

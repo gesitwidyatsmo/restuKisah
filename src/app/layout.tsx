@@ -37,9 +37,13 @@ export default function RootLayout({
   return (
     <html
       lang="id"
+      suppressHydrationWarning
       className={`${jakartaSans.variable} ${playfairDisplay.variable} ${cinzel.variable} ${greatVibes.variable} ${cormorantGaramond.variable} ${alexBrush.variable} ${lora.variable} ${montserrat.variable} ${amiri.variable} h-full antialiased`}
     >
-      <body className="min-h-full font-sans bg-canvas-pattern text-[#1C1917] selection:bg-rose-200 selection:text-rose-900">
+      <body
+        suppressHydrationWarning
+        className="min-h-full font-sans bg-canvas-pattern text-[#1C1917] selection:bg-rose-200 selection:text-rose-900"
+      >
         {children}
       </body>
     </html>

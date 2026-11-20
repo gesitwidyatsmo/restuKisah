@@ -7,6 +7,7 @@ import JavaneseAnimatedCoverModal from './JavaneseAnimatedCoverModal';
 import RoyalJavaneseHeroCountdown from './jawa/RoyalJavaneseHeroCountdown';
 import RoyalJavaneseQuoteOpening from './jawa/RoyalJavaneseQuoteOpening';
 import RoyalJavaneseBrideGroomProfile from './jawa/RoyalJavaneseBrideGroomProfile';
+import RoyalJavaneseWeddingEventsLocation from './jawa/RoyalJavaneseWeddingEventsLocation';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -83,6 +84,7 @@ export default function JavaneseParchmentTemplate({
     <div 
       ref={containerRef}
       onMouseMove={handleMouseMove}
+      suppressHydrationWarning
       className="relative min-h-[100dvh] w-full overflow-x-hidden bg-[#FAF8F5] text-[#1C1917] font-sans selection:bg-amber-200 py-4 sm:py-8 flex flex-col items-center justify-center"
     >
       {/* 1. ULTRA SLOW BREATHING PARCHMENT BACKDROP */}
@@ -129,6 +131,7 @@ export default function JavaneseParchmentTemplate({
 
       {/* 4. FLOATING MUSIC CONTROLLER */}
       <motion.button
+        suppressHydrationWarning
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
         onClick={() => setIsPlayingMusic(!isPlayingMusic)}
@@ -385,6 +388,13 @@ export default function JavaneseParchmentTemplate({
             {/* SECTION 03: ROYAL JAVANESE BRIDE & GROOM PROFILES */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseBrideGroomProfile />
+            </div>
+
+            {/* SECTION 04: ROYAL JAVANESE WEDDING EVENTS & LOCATION */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseWeddingEventsLocation 
+                cardFrameImage="/adat-jawa-cover/Ornate Ivory Gold Floral Banner.webp"
+              />
             </div>
 
             {/* Subtle Return to Cover Navigation */}

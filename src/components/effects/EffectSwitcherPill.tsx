@@ -45,6 +45,7 @@ export default function EffectSwitcherPill({
     <>
       {/* Floating Pill Trigger (Fixed at bottom-left) */}
       <motion.button
+        suppressHydrationWarning
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
         onClick={() => setIsOpen(!isOpen)}
