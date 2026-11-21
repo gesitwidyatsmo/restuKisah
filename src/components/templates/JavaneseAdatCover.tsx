@@ -20,8 +20,8 @@ export default function JavaneseAdatCover({
   variant = 'complete'
 }: JavaneseAdatCoverProps) {
   const coverImageSrc = variant === 'complete' 
-    ? '/templates/jawa/cover-adat-jawa-complete.png' 
-    : '/templates/jawa/cover-adat-jawa-blank.png';
+    ? '/templates/jawa/cover/cover-adat-jawa-complete.png' 
+    : '/templates/jawa/cover/cover-adat-jawa-blank.png';
 
   return (
     <div className="relative w-full max-w-[430px] mx-auto p-2 sm:p-4 flex flex-col items-center">

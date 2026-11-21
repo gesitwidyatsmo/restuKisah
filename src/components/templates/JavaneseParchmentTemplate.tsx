@@ -92,7 +92,7 @@ export default function JavaneseParchmentTemplate({
       <motion.div 
         className="fixed inset-0 w-full h-full bg-cover bg-center pointer-events-none z-0"
         style={{
-          backgroundImage: `url(${isOpen ? '/templates/jawa/hero/bg-ivory-heritage.webp' : '/templates/jawa/cover-bg.jpg'})`,
+          backgroundImage: `url(${isOpen ? '/templates/jawa/common/bg-ivory-heritage.webp' : '/templates/jawa/common/cover-bg.jpg'})`,
           filter: 'blur(8px) brightness(0.96) contrast(1.02)',
           opacity: 0.35,
         }}
@@ -212,7 +212,7 @@ export default function JavaneseParchmentTemplate({
                 style={{ willChange: 'transform, opacity' }}
               >
                 <img 
-                  src="/templates/jawa/gunungan.png" 
+                  src="/templates/jawa/common/gunungan.png" 
                   alt="Gunungan Wayang Kiri" 
                   className="w-48 sm:w-60 h-auto object-contain filter drop-shadow-[0_15px_25px_rgba(180,83,9,0.7)]"
                 />
@@ -236,7 +236,7 @@ export default function JavaneseParchmentTemplate({
                 style={{ willChange: 'transform, opacity' }}
               >
                 <img 
-                  src="/templates/jawa/gunungan.png" 
+                  src="/templates/jawa/common/gunungan.png" 
                   alt="Gunungan Wayang Kanan" 
                   className="w-48 sm:w-60 h-auto object-contain filter drop-shadow-[0_15px_25px_rgba(180,83,9,0.7)] scale-x-[-1]"
                 />
@@ -301,7 +301,7 @@ export default function JavaneseParchmentTemplate({
                 <div
                   className="absolute inset-0 w-full h-full bg-cover bg-bottom pointer-events-none z-0"
                   style={{
-                    backgroundImage: `url('/templates/jawa/cover-bg.jpg')`,
+                    backgroundImage: `url('/templates/jawa/common/cover-bg.jpg')`,
                     filter: 'contrast(1.02) brightness(0.98)',
                   }}
                 />
@@ -311,7 +311,7 @@ export default function JavaneseParchmentTemplate({
                   <div className="relative w-full border-2 border-[#8C6D46]/80 rounded-[28px] p-4 sm:p-5 bg-[#FAF6F0]/92 backdrop-blur-xs shadow-xs mb-3.5">
                     <div className="w-10 h-10 rounded-full bg-gradient-to-br from-amber-400 to-amber-600 border border-[#1C1917] shadow-xs flex items-center justify-center mx-auto mb-2 p-1.5">
                       <img 
-                        src="/templates/jawa/gunungan.png" 
+                        src="/templates/jawa/common/gunungan.png" 
                         alt="Gunungan" 
                         className="w-full h-full object-contain filter drop-shadow-xs" 
                       />
@@ -394,7 +394,7 @@ export default function JavaneseParchmentTemplate({
             {/* SECTION 04: ROYAL JAVANESE WEDDING EVENTS & LOCATION */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseWeddingEventsLocation 
-                cardFrameImage="/adat-jawa-cover/Ornate Ivory Gold Floral Banner.webp"
+                cardFrameImage="/templates/jawa/events/card-banner.webp"
               />
             </div>
 

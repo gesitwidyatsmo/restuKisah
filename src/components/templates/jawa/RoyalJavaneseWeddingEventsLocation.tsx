@@ -47,10 +47,10 @@ export interface RoyalJavaneseWeddingEventsLocationProps {
 
 export default function RoyalJavaneseWeddingEventsLocation({
 	sectionTitle = 'The Wedding Celebration',
-	topCrestImage = '/adat-jawa-cover/komponen adat jawa/Ornament Library/Gilded Javanese Floral Wood Crest.webp',
-	topGarlandLeftImage = '/templates/jawa/hero/jasmine-cascade-hanging.webp',
-	topGarlandRightImage = '/templates/jawa/hero/jasmine-cascade-hanging.webp',
-	headerDividerImage = '/adat-jawa-cover/komponen adat jawa/Ornament Library/Ornate Golden Floral Divider.webp',
+	topCrestImage = '/templates/jawa/common/crest-wood-gold.webp',
+	topGarlandLeftImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
+	topGarlandRightImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
+	headerDividerImage = '/templates/jawa/common/divider-gold-floral.webp',
 
 	events = [
 		{
@@ -61,7 +61,7 @@ export default function RoyalJavaneseWeddingEventsLocation({
 			time: '08.00 – 10.00 WIB',
 			venueName: 'Masjid Al-Ikhlas',
 			address: 'Jl. Merpati No. 12, Desa Sumberrejo, Kec. Ngemplak, Kab. Sleman',
-			image: '/adat-jawa-cover/Ornate Islamic Wedding Arch with Quran and Rings.webp',
+			image: '/templates/jawa/events/event-akad.webp',
 			imageAlt: 'Ornate Islamic Wedding Arch with Quran and Rings',
 		},
 		{
@@ -72,7 +72,7 @@ export default function RoyalJavaneseWeddingEventsLocation({
 			time: '11.00 – 14.00 WIB',
 			venueName: 'Gedung Graha Kencana',
 			address: 'Jl. Melati No. 45, Desa Sumberrejo, Kec. Ngemplak, Kab. Sleman',
-			image: '/adat-jawa-cover/Ornate Golden Wedding Canopy.webp',
+			image: '/templates/jawa/events/event-resepsi.webp',
 			imageAlt: 'Ornate Golden Wedding Canopy',
 		},
 		{
@@ -83,7 +83,7 @@ export default function RoyalJavaneseWeddingEventsLocation({
 			time: '10.00 – 13.00 WIB',
 			venueName: 'Pendopo Keluarga Besar',
 			address: 'Jl. Kenanga No. 8, Desa Wonosari, Kec. Ngemplak, Kab. Sleman',
-			image: '/adat-jawa-cover/Ornate Javanese Pavilion with Jasmine Flowers.webp',
+			image: '/templates/jawa/events/event-unduh-mantu.webp',
 			imageAlt: 'Ornate Javanese Pavilion with Jasmine Flowers',
 		},
 	],
@@ -91,13 +91,13 @@ export default function RoyalJavaneseWeddingEventsLocation({
 	locationTitle = 'Location',
 	locationVenueName = 'Gedung Graha Kencana',
 	locationAddress = 'Jl. Melati No. 45, Desa Sumberrejo, Kec. Ngemplak, Kab. Sleman',
-	locationImage = '/adat-jawa-cover/Glossy 3D Map Pin with Floral Accents.webp',
+	locationImage = '/templates/jawa/events/map-pin.webp',
 	googleMapsUrl = 'https://maps.google.com/?q=Gedung+Graha+Kencana+Desa+Sumberrejo+Ngemplak+Sleman',
 	googleMapsButtonText = 'Open Google Maps',
 
-	cardFrameImage = '/adat-jawa-cover/Ornate Ivory Gold Floral Banner.webp',
-	bottomOrnamentImage = '/adat-jawa-cover/komponen adat jawa/Ornate Javanese Batik Gold Border-2.webp',
-	backgroundImage = '/adat-jawa-cover/komponen adat jawa/background/Embossed Javanese Floral Cream Paper.webp',
+	cardFrameImage = '/templates/jawa/events/card-banner.webp',
+	bottomOrnamentImage = '/templates/jawa/common/batik-gold-border.webp',
+	backgroundImage = '/templates/jawa/common/bg-cream-embossed.webp',
 
 	className = '',
 }: RoyalJavaneseWeddingEventsLocationProps) {

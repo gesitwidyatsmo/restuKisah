@@ -42,8 +42,8 @@ export default function RoyalJavaneseLoveStory({
 			title: 'FIRST MEETING',
 			description:
 				'Segalanya bermula dari sebuah pertemuan sederhana di kampus. Saat itu, kami hanya dua orang asing yang tak menyangka, obrolan singkat hari itu akan menjadi awal dari kisah panjang kami.',
-			image: '/adat-jawa-cover/Warm Café Date with Iced Drinks.webp',
-			framedImage: '/adat-jawa-cover/story-framed-1.webp',
+			image: '/templates/jawa/story/story-1-meeting.webp',
+			framedImage: '/templates/jawa/story/story-framed-1.webp',
 			imageAlt: 'First Meeting di Kampus',
 		},
 		{
@@ -52,8 +52,8 @@ export default function RoyalJavaneseLoveStory({
 			title: 'THE PROPOSAL',
 			description:
 				'Setelah saling mengenal lebih dalam, kami semakin yakin untuk melangkah bersama. Dengan penuh doa dan restu keluarga, ia datang dengan niat baik, mengikat komitmen untuk masa depan yang sama.',
-			image: '/adat-jawa-cover/Warm Lamaran Portrait with Floral Elegance.webp',
-			framedImage: '/adat-jawa-cover/story-framed-2.webp',
+			image: '/templates/jawa/story/story-2-proposal.webp',
+			framedImage: '/templates/jawa/story/story-framed-2.webp',
 			imageAlt: 'Momen Lamaran & Komitmen Bersama',
 		},
 		{
@@ -62,21 +62,21 @@ export default function RoyalJavaneseLoveStory({
 			title: 'THE WEDDING',
 			description:
 				'Kini, kami siap memulai babak baru dalam hidup. Bukan lagi dua individu, melainkan satu perjalanan hidup bersama, membangun rumah tangga yang diridhai Allah, penuh cinta, dan saling melengkapi.',
-			image: '/adat-jawa-cover/Warm Wedding Portrait in Paes Ageng.webp',
-			framedImage: '/adat-jawa-cover/story-framed-3.webp',
+			image: '/templates/jawa/story/story-3-wedding.webp',
+			framedImage: '/templates/jawa/story/story-framed-3.webp',
 			imageAlt: 'Pawiwahan Ageng Pernikahan Adat Jawa',
 		},
 	],
-	backgroundImage = '/adat-jawa-cover/komponen adat jawa/background/Elegant Javanese Batik Embossed Background.webp',
-	topCrestImage = '/adat-jawa-cover/cover/3. Ornate Golden Wood Crest.webp',
-	topGarlandLeftImage = '/templates/jawa/hero/jasmine-cascade-hanging.webp',
-	topGarlandRightImage = '/templates/jawa/hero/jasmine-cascade-hanging.webp',
-	headerDividerImage = '/adat-jawa-cover/komponen adat jawa/Ornament Library/Ornate Golden Floral Divider.webp',
-	archFrameImage = '/adat-jawa-cover/Ornate Golden Arch Frame with Jasmine Accents.webp',
-	badgeFrameImage = '/adat-jawa-cover/Ornate Golden Parchment Badge.webp',
-	rosetteImage = '/adat-jawa-cover/Ornate Gold Floral Divider one.webp',
-	bottomGununganImage = '/adat-jawa-cover/cover/7. Ornate Golden Javanese Gunungan Ornament.webp',
-	bottomBorderImage = '/adat-jawa-cover/komponen adat jawa/Ornate Javanese Batik Gold Border-2.webp',
+	backgroundImage = '/templates/jawa/story/bg-batik-dark.webp',
+	topCrestImage = '/templates/jawa/common/crest-wood-gold.webp',
+	topGarlandLeftImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
+	topGarlandRightImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
+	headerDividerImage = '/templates/jawa/common/divider-gold-floral.webp',
+	archFrameImage = '/templates/jawa/story/arch-frame.webp',
+	badgeFrameImage = '/templates/jawa/story/badge-step.webp',
+	rosetteImage = '/templates/jawa/story/rosette-node.webp',
+	bottomGununganImage = '/templates/jawa/story/gunungan-ornament.webp',
+	bottomBorderImage = '/templates/jawa/common/batik-gold-border.webp',
 	className = '',
 }: RoyalJavaneseLoveStoryProps) {
 	// Lightbox Modal State for photo preview
@@ -102,28 +102,28 @@ export default function RoyalJavaneseLoveStory({
 			{/* Outer Golden Border Corner Flourishes */}
 			<div className="absolute top-2 left-2 w-14 h-14 pointer-events-none z-10 opacity-70">
 				<img
-					src="/adat-jawa-cover/komponen adat jawa/Hero & Countdown — Royal Couple Introduction/Golden Baroque Floral Corner Flourish.webp"
+					src="/templates/jawa/story/corner-flourish.webp"
 					alt="Ornament Pojok Kiri Atas"
 					className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
 				/>
 			</div>
 			<div className="absolute top-2 right-2 w-14 h-14 pointer-events-none z-10 opacity-70 scale-x-[-1]">
 				<img
-					src="/adat-jawa-cover/komponen adat jawa/Hero & Countdown — Royal Couple Introduction/Golden Baroque Floral Corner Flourish.webp"
+					src="/templates/jawa/story/corner-flourish.webp"
 					alt="Ornament Pojok Kanan Atas"
 					className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
 				/>
 			</div>
 			<div className="absolute bottom-2 left-2 w-14 h-14 pointer-events-none z-10 opacity-70 scale-y-[-1]">
 				<img
-					src="/adat-jawa-cover/komponen adat jawa/Hero & Countdown — Royal Couple Introduction/Golden Baroque Floral Corner Flourish.webp"
+					src="/templates/jawa/story/corner-flourish.webp"
 					alt="Ornament Pojok Kiri Bawah"
 					className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
 				/>
 			</div>
 			<div className="absolute bottom-2 right-2 w-14 h-14 pointer-events-none z-10 opacity-70 scale-x-[-1] scale-y-[-1]">
 				<img
-					src="/adat-jawa-cover/komponen adat jawa/Hero & Countdown — Royal Couple Introduction/Golden Baroque Floral Corner Flourish.webp"
+					src="/templates/jawa/story/corner-flourish.webp"
 					alt="Ornament Pojok Kanan Bawah"
 					className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]"
 				/>

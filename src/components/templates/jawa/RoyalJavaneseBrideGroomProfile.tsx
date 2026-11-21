@@ -178,10 +178,10 @@ export default function RoyalJavaneseBrideGroomProfile({
   groomImage = '/templates/jawa/profile/groom-portrait.webp',
 
   frameMode = 'vector_baroque',
-  textFrameImage = '/adat-jawa-cover/komponen adat jawa/Ivory Parchment Frame with Gold Javanese Flourishes.webp',
+  textFrameImage = '/templates/jawa/profile/parchment-frame-flourishes.webp',
   textFrameHeight = '98%',
   backgroundImage = '/templates/jawa/hero/bg-cream-embossed.webp',
-  bottomOrnamentImage = '/adat-jawa-cover/komponen adat jawa/Ornate Javanese Batik Gold Border-2.webp',
+  bottomOrnamentImage = '/templates/jawa/common/batik-gold-border.webp',
   className = ''
 }: RoyalJavaneseBrideGroomProfileProps) {
   return (
@@ -336,7 +336,7 @@ export default function RoyalJavaneseBrideGroomProfile({
         >
           {/* Background Filigree Floral Vines (2172x724 Master File) */}
           <img
-            src="/templates/jawa/cover/divider.webp"
+            src="/templates/jawa/common/divider-gold.webp"
             alt=""
             className="w-full h-auto object-contain filter drop-shadow-xs opacity-80"
           />
