@@ -1,7 +1,8 @@
 'use client';
 
-import React from 'react';
-import { motion } from 'framer-motion';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { X, ZoomIn } from 'lucide-react';
 
 export interface LoveStoryMilestone {
 	id: string;
@@ -9,8 +10,9 @@ export interface LoveStoryMilestone {
 	title: string;
 	description: string;
 	image: string;
+	framedImage?: string;
 	imageAlt?: string;
-	layout: 'badge-left' | 'badge-right';
+	layout?: 'badge-left' | 'badge-right';
 }
 
 export interface RoyalJavaneseLoveStoryProps {
@@ -41,8 +43,8 @@ export default function RoyalJavaneseLoveStory({
 			description:
 				'Segalanya bermula dari sebuah pertemuan sederhana di kampus. Saat itu, kami hanya dua orang asing yang tak menyangka, obrolan singkat hari itu akan menjadi awal dari kisah panjang kami.',
 			image: '/adat-jawa-cover/Warm Café Date with Iced Drinks.webp',
+			framedImage: '/adat-jawa-cover/story-framed-1.webp',
 			imageAlt: 'First Meeting di Kampus',
-			layout: 'badge-left',
 		},
 		{
 			id: 'the-proposal',
@@ -51,8 +53,8 @@ export default function RoyalJavaneseLoveStory({
 			description:
 				'Setelah saling mengenal lebih dalam, kami semakin yakin untuk melangkah bersama. Dengan penuh doa dan restu keluarga, ia datang dengan niat baik, mengikat komitmen untuk masa depan yang sama.',
 			image: '/adat-jawa-cover/Warm Lamaran Portrait with Floral Elegance.webp',
+			framedImage: '/adat-jawa-cover/story-framed-2.webp',
 			imageAlt: 'Momen Lamaran & Komitmen Bersama',
-			layout: 'badge-right',
 		},
 		{
 			id: 'the-wedding',
@@ -61,8 +63,8 @@ export default function RoyalJavaneseLoveStory({
 			description:
 				'Kini, kami siap memulai babak baru dalam hidup. Bukan lagi dua individu, melainkan satu perjalanan hidup bersama, membangun rumah tangga yang diridhai Allah, penuh cinta, dan saling melengkapi.',
 			image: '/adat-jawa-cover/Warm Wedding Portrait in Paes Ageng.webp',
+			framedImage: '/adat-jawa-cover/story-framed-3.webp',
 			imageAlt: 'Pawiwahan Ageng Pernikahan Adat Jawa',
-			layout: 'badge-left',
 		},
 	],
 	backgroundImage = '/adat-jawa-cover/komponen adat jawa/background/Elegant Javanese Batik Embossed Background.webp',
@@ -72,24 +74,19 @@ export default function RoyalJavaneseLoveStory({
 	headerDividerImage = '/adat-jawa-cover/komponen adat jawa/Ornament Library/Ornate Golden Floral Divider.webp',
 	archFrameImage = '/adat-jawa-cover/Ornate Golden Arch Frame with Jasmine Accents.webp',
 	badgeFrameImage = '/adat-jawa-cover/Ornate Golden Parchment Badge.webp',
-	rosetteImage = '/adat-jawa-cover/golden_rosette_node.webp',
+	rosetteImage = '/adat-jawa-cover/Ornate Gold Floral Divider one.webp',
 	bottomGununganImage = '/adat-jawa-cover/cover/7. Ornate Golden Javanese Gunungan Ornament.webp',
 	bottomBorderImage = '/adat-jawa-cover/komponen adat jawa/Ornate Javanese Batik Gold Border-2.webp',
 	className = '',
 }: RoyalJavaneseLoveStoryProps) {
+	// Lightbox Modal State for photo preview
+	const [activePhoto, setActivePhoto] = useState<LoveStoryMilestone | null>(null);
+
 	return (
 		<section
 			className={`relative w-full max-w-[440px] sm:max-w-[480px] mx-auto overflow-hidden rounded-[36px] sm:rounded-[44px] shadow-2xl border-2 border-[#D4AF37]/40 ring-1 ring-[#B58A45]/20 bg-[#281309] select-none text-[#FFF6E5] flex flex-col justify-between ${className}`}
 			aria-label="Our Love Story Timeline"
 		>
-			{/* SVG Definition for Perfect Arch Photo Clipping */}
-			<svg className="absolute w-0 h-0 pointer-events-none opacity-0" aria-hidden="true">
-				<defs>
-					<clipPath id="javanese-arch-frame-clip" clipPathUnits="objectBoundingBox">
-						<path d="M 0.0953 0.2302 L 0.0724 0.2886 L 0.0739 0.7256 L 0.1052 0.7815 L 0.1494 0.8040 L 0.1578 0.8382 L 0.1883 0.8457 L 0.2149 0.8782 L 0.7630 0.8849 L 0.8110 0.8457 L 0.8346 0.8457 L 0.8491 0.8048 L 0.8880 0.7873 L 0.9146 0.7548 L 0.9276 0.7064 L 0.9245 0.2752 L 0.9040 0.2302 L 0.8483 0.1952 L 0.8323 0.1568 L 0.8064 0.1551 L 0.7736 0.1043 L 0.7325 0.0909 L 0.5877 0.0901 L 0.5305 0.0592 L 0.5000 0.0792 L 0.4688 0.0592 L 0.3956 0.0926 L 0.2591 0.0917 L 0.2233 0.1059 L 0.1928 0.1551 L 0.1669 0.1568 L 0.1509 0.1952 Z" />
-					</clipPath>
-				</defs>
-			</svg>
 			{/* ----------------------------------------------------------------- */}
 			{/* 1. BACKGROUND: DEEP RICH JAVANESE EMBOSSED BATIK PAPER            */}
 			{/* ----------------------------------------------------------------- */}
@@ -225,30 +222,27 @@ export default function RoyalJavaneseLoveStory({
 			{/* 3. TIMELINE BODY WITH CENTRAL GOLDEN AXIS & ROSETTES              */}
 			{/* ----------------------------------------------------------------- */}
 			<div className="relative z-20 px-3 sm:px-4 py-2 sm:py-3 flex flex-col gap-6 sm:gap-8">
-				{/* Central Vertical Golden Timeline Spine */}
-				<div
-					className="absolute left-1/2 -translate-x-1/2 top-4 bottom-8 w-[2px] pointer-events-none z-10"
+				{/* Central Vertical Golden Timeline Spine (z-0: strictly behind cards and markers) */}
+				<motion.div
+					initial={{ scaleY: 0, opacity: 0 }}
+					whileInView={{ scaleY: 1, opacity: 1 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+					className="absolute left-1/2 -translate-x-1/2 top-4 bottom-8 w-[2px] pointer-events-none z-0"
 					style={{
+						originY: 0,
 						background:
 							'linear-gradient(to bottom, rgba(212, 175, 55, 0.2) 0%, rgba(243, 215, 151, 0.95) 15%, rgba(212, 175, 55, 1) 50%, rgba(243, 215, 151, 0.95) 85%, rgba(212, 175, 55, 0.2) 100%)',
 						boxShadow: '0 0 6px rgba(243, 215, 151, 0.6), 0 0 12px rgba(181, 138, 69, 0.3)',
 					}}
 				/>
 
-				{/* Top Rosette Node on Spine */}
-				<div className="absolute left-1/2 -translate-x-1/2 -top-0.5 z-20 pointer-events-none">
-					<img
-						src={rosetteImage}
-						alt="Rosette Node"
-						className="w-4 sm:w-5 h-4 sm:h-5 object-contain filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
-					/>
-				</div>
-
 				{/* Milestones List */}
 				{stories.map((item, index) => {
-					const isBadgeLeft = item.layout === 'badge-left';
+					// Dynamic alternate layout: even indices have badge on left, odd have badge on right
+					const isBadgeLeft = item.layout ? item.layout === 'badge-left' : index % 2 === 0;
 
-					// Render Parchment Badge Card
+					// Render Parchment Badge Card (Number directly inside badge's built-in oval crest, no extra lonjong)
 					const renderBadgeCard = () => (
 						<div className="relative w-full aspect-[1312/1199] flex items-center justify-center">
 							{/* Outer Parchment Badge Frame Image */}
@@ -258,72 +252,54 @@ export default function RoyalJavaneseLoveStory({
 								className="absolute inset-0 w-full h-full object-contain pointer-events-none z-0 filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.6)]"
 							/>
 
-							{/* Step Pill: "01", "02", "03" Overlapping Top Center */}
-							<div className="absolute top-[2%] xs:top-[2.5%] sm:top-[3%] left-1/2 -translate-x-1/2 z-20">
-								<div className="relative px-2 xs:px-2.5 sm:px-3 py-0.5 rounded-full bg-[#3B1E0F] border-[1.2px] sm:border-[1.5px] border-[#D4AF37] shadow-[0_2px_5px_rgba(0,0,0,0.7)] ring-1 ring-amber-300/40 flex items-center justify-center">
-									<span className="font-cormorant font-bold text-[9.5px] xs:text-[10.5px] sm:text-[12px] text-[#F9E2AF] tracking-widest leading-none">
-										{item.step}
-									</span>
-								</div>
+							{/* Step Number: Positioned directly inside the badge's built-in oval crest (Dead center vertically and horizontally) */}
+							<div className="absolute top-[3.2%] left-1/2 -translate-x-1/2 w-[22%] h-[15.5%] z-20 pointer-events-none flex items-center justify-center">
+								<span className="font-cormorant font-bold text-[13px] xs:text-[15px] sm:text-[17px] text-[#F9E2AF] tracking-widest leading-none drop-shadow-[0_1px_2px_rgba(0,0,0,0.9)]">
+									{item.step}
+								</span>
 							</div>
 
 							{/* Inner Badge Text Content */}
-							<div className="relative z-10 w-[84%] xs:w-[82%] sm:w-[80%] pt-3 xs:pt-3.5 sm:pt-4 pb-1 sm:pb-1.5 px-1 flex flex-col items-center text-center justify-center">
+							<div className="relative z-10 w-[80%] xs:w-[78%] sm:w-[76%] pt-6 xs:pt-7 sm:pt-8 pb-3 sm:pb-4 px-2 flex flex-col items-center text-center justify-center">
 								{/* Title: FIRST MEETING / THE PROPOSAL / THE WEDDING */}
-								<h3 className="font-cormorant font-bold italic tracking-[0.08em] sm:tracking-[0.1em] text-[10.5px] xs:text-[11.5px] sm:text-[13.5px] text-[#2C1810] leading-tight uppercase">
+								<h3 className="font-cormorant font-bold italic tracking-[0.08em] sm:tracking-[0.1em] text-[10.5px] xs:text-[11.5px] sm:text-[13.5px] text-[#2C1810] leading-tight uppercase mb-1 sm:mb-1.5">
 									{item.title}
 								</h3>
 
-								{/* Small Floral Divider */}
-								<div className="flex items-center justify-center gap-1 my-0.5 opacity-80">
-									<span className="h-[0.5px] w-3.5 sm:w-5 bg-gradient-to-r from-transparent to-[#B58A45]" />
-									<span className="text-[#966B24] text-[7px] xs:text-[8px] sm:text-[9px]">❖</span>
-									<span className="h-[0.5px] w-3.5 sm:w-5 bg-gradient-to-l from-transparent to-[#B58A45]" />
-								</div>
-
 								{/* Story Narrative Description */}
-								<p className="font-cormorant font-medium text-[7.8px] xs:text-[8.5px] sm:text-[9.8px] text-[#3B2213] leading-[1.22] xs:leading-[1.28] sm:leading-[1.34] tracking-normal">
+								<p className="font-cormorant font-medium text-[8px] xs:text-[8.8px] sm:text-[10px] text-[#3B2213] leading-[1.24] xs:leading-[1.28] sm:leading-[1.35] tracking-normal">
 									{item.description}
 								</p>
 							</div>
 						</div>
 					);
 
-					// Render Framed Photo with Jasmine Accents
+					// Render Framed Photo: 100% pixel-perfect to all lekukan with ZERO leakage
 					const renderPhotoCard = () => (
-						<div className="relative w-full aspect-[1312/1199] group overflow-visible flex items-center justify-center">
-							{/* Photo container automatically clipped by exact arch contour */}
-							<div
-								className="relative w-full h-full overflow-hidden"
-								style={{
-									clipPath: 'url(#javanese-arch-frame-clip)',
-									WebkitClipPath: 'url(#javanese-arch-frame-clip)',
-									maskImage: 'url(/adat-jawa-cover/arch-inner-mask.webp)',
-									WebkitMaskImage: 'url(/adat-jawa-cover/arch-inner-mask.webp)',
-									maskSize: 'contain',
-									WebkitMaskSize: 'contain',
-									maskRepeat: 'no-repeat',
-									WebkitMaskRepeat: 'no-repeat',
-									maskPosition: 'center',
-									WebkitMaskPosition: 'center',
-								}}
-							>
-								<motion.img
-									whileHover={{ scale: 1.05 }}
-									transition={{ duration: 0.5, ease: 'easeOut' }}
-									src={item.image}
-									alt={item.imageAlt || item.title}
-									className="w-full h-full object-cover object-center transform-gpu"
-								/>
-							</div>
-
-							{/* Golden Arch Frame Overlay with Jasmine Flowers on corner */}
+						<motion.div
+							whileHover={{ scale: 1.02 }}
+							whileTap={{ scale: 0.98 }}
+							onClick={() => setActivePhoto(item)}
+							className="relative w-full aspect-[1312/1199] group overflow-visible flex items-center justify-center cursor-pointer"
+							role="button"
+							tabIndex={0}
+							aria-label={`Buka foto ${item.title}`}
+						>
+							{/* Master Pixel-Perfect Framed Photo: Mathematically zero leaking pixels outside lekukan */}
 							<img
-								src={archFrameImage}
-								alt="Ornate Golden Arch Frame"
-								className="absolute inset-0 w-full h-full object-contain pointer-events-none z-10 filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.65)]"
+								src={item.framedImage || archFrameImage}
+								alt={item.imageAlt || item.title}
+								className="w-full h-full object-contain pointer-events-none filter drop-shadow-[0_8px_16px_rgba(0,0,0,0.65)]"
 							/>
-						</div>
+
+							{/* Interactive Zoom Indicator Pill */}
+							<div className="absolute bottom-3 right-3 sm:bottom-4 sm:right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none">
+								<div className="px-2 py-0.5 rounded-full bg-black/65 backdrop-blur-xs border border-amber-300/40 text-[8px] xs:text-[9px] text-[#F9E2AF] flex items-center gap-1 shadow-md">
+									<ZoomIn className="w-2.5 h-2.5" />
+									<span className="font-sans font-medium">Perbesar</span>
+								</div>
+							</div>
+						</motion.div>
 					);
 
 					return (
@@ -333,16 +309,23 @@ export default function RoyalJavaneseLoveStory({
 							whileInView={{ opacity: 1, y: 0 }}
 							viewport={{ once: true, margin: '-40px' }}
 							transition={{ duration: 0.7, delay: index * 0.15 }}
-							className="relative w-full grid grid-cols-2 gap-2.5 xs:gap-3 sm:gap-4 items-center"
+							className="relative z-20 w-full grid grid-cols-2 gap-2.5 xs:gap-3 sm:gap-4 items-center"
 						>
-							{/* Center Rosette Node for this Milestone */}
-							<div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+							{/* Center Marker Node with subtle breathing animation & backing disc */}
+							<motion.div
+								animate={{ scale: [1, 1.08, 1] }}
+								transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: index * 0.8 }}
+								className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none flex items-center justify-center"
+							>
+								{/* Dark circular backing disc to occlude the vertical line */}
+								<div className="absolute w-4 h-4 rounded-full bg-[#281309] -z-10 shadow-xs" />
+
 								<img
 									src={rosetteImage}
-									alt="Rosette Milestone Node"
-									className="w-5 sm:w-6 h-5 sm:h-6 object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
+									alt="Floral Milestone Marker"
+									className="w-6 sm:w-7 h-6 sm:h-7 object-contain filter drop-shadow-[0_2px_8px_rgba(0,0,0,0.95)]"
 								/>
-							</div>
+							</motion.div>
 
 							{/* Left Column */}
 							<div className="w-full flex items-center justify-center">
@@ -362,15 +345,6 @@ export default function RoyalJavaneseLoveStory({
 			{/* 4. BOTTOM ORNAMENT: SACRED GUNUNGAN & GOLDEN WOOD CARVING BORDER  */}
 			{/* ----------------------------------------------------------------- */}
 			<div className="relative z-20 mt-4 sm:mt-6 pb-2 flex flex-col items-center">
-				{/* Bottom Center Golden Rosette before Gunungan */}
-				<div className="w-4 sm:w-5 h-4 sm:h-5 -mb-2 z-20 pointer-events-none">
-					<img
-						src={rosetteImage}
-						alt="Rosette Bottom Node"
-						className="w-full h-full object-contain filter drop-shadow-[0_2px_6px_rgba(0,0,0,0.9)]"
-					/>
-				</div>
-
 				{/* Center Sacred Golden Gunungan Ornament */}
 				<motion.div
 					initial={{ opacity: 0, y: 15 }}
@@ -395,6 +369,63 @@ export default function RoyalJavaneseLoveStory({
 					/>
 				</div>
 			</div>
+
+			{/* ----------------------------------------------------------------- */}
+			{/* 5. ROYAL JAVANESE PHOTO LIGHTBOX MODAL                            */}
+			{/* ----------------------------------------------------------------- */}
+			<AnimatePresence>
+				{activePhoto && (
+					<motion.div
+						initial={{ opacity: 0 }}
+						animate={{ opacity: 1 }}
+						exit={{ opacity: 0 }}
+						onClick={() => setActivePhoto(null)}
+						className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+					>
+						<motion.div
+							initial={{ scale: 0.9, y: 20 }}
+							animate={{ scale: 1, y: 0 }}
+							exit={{ scale: 0.9, y: 20 }}
+							transition={{ duration: 0.3, ease: 'easeOut' }}
+							onClick={(e) => e.stopPropagation()}
+							className="relative max-w-sm sm:max-w-md w-full bg-[#1F0C05] border-2 border-[#D4AF37] rounded-3xl p-3 sm:p-4 shadow-2xl flex flex-col items-center ring-1 ring-amber-400/40"
+						>
+							{/* Close Button */}
+							<button
+								onClick={() => setActivePhoto(null)}
+								className="absolute -top-3.5 -right-3.5 w-8 h-8 rounded-full bg-[#3B1E0F] border border-[#D4AF37] text-[#F9E2AF] flex items-center justify-center shadow-lg hover:bg-amber-800 transition-colors z-20"
+								aria-label="Tutup foto"
+							>
+								<X className="w-4 h-4" />
+							</button>
+
+							{/* Photo Frame Container */}
+							<div className="relative w-full aspect-[4/3] rounded-2xl overflow-hidden border border-[#D4AF37]/50 shadow-inner">
+								<img
+									src={activePhoto.image}
+									alt={activePhoto.imageAlt || activePhoto.title}
+									className="w-full h-full object-cover"
+								/>
+							</div>
+
+							{/* Caption Information */}
+							<div className="w-full mt-3 flex flex-col items-center text-center">
+								<div className="flex items-center gap-2 mb-1">
+									<span className="px-2 py-0.5 rounded-full bg-[#3B1E0F] border border-[#D4AF37] text-[10px] font-cormorant font-bold text-[#F9E2AF]">
+										{activePhoto.step}
+									</span>
+									<span className="font-cinzel text-xs font-bold text-[#F3D797] tracking-wider uppercase">
+										{activePhoto.title}
+									</span>
+								</div>
+								<p className="font-cormorant text-xs text-stone-300 leading-relaxed px-2">
+									{activePhoto.description}
+								</p>
+							</div>
+						</motion.div>
+					</motion.div>
+				)}
+			</AnimatePresence>
 		</section>
 	);
 }
