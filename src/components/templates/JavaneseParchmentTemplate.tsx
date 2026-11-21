@@ -9,6 +9,7 @@ import RoyalJavaneseQuoteOpening from './jawa/RoyalJavaneseQuoteOpening';
 import RoyalJavaneseBrideGroomProfile from './jawa/RoyalJavaneseBrideGroomProfile';
 import RoyalJavaneseWeddingEventsLocation from './jawa/RoyalJavaneseWeddingEventsLocation';
 import RoyalJavaneseLoveStory from './jawa/RoyalJavaneseLoveStory';
+import RoyalJavanesePhotoVideoGallery from './jawa/RoyalJavanesePhotoVideoGallery';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -401,6 +402,13 @@ export default function JavaneseParchmentTemplate({
             {/* SECTION 05: ROYAL JAVANESE OUR LOVE STORY TIMELINE */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseLoveStory />
+            </div>
+
+            {/* SECTION 06: ROYAL JAVANESE PHOTO & VIDEO GALLERY */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavanesePhotoVideoGallery 
+                backgroundImage="/templates/jawa/common/bg-cream-embossed.webp"
+              />
             </div>
 
             {/* Subtle Return to Cover Navigation */}
