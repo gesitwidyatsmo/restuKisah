@@ -10,6 +10,7 @@ import RoyalJavaneseBrideGroomProfile from './jawa/RoyalJavaneseBrideGroomProfil
 import RoyalJavaneseWeddingEventsLocation from './jawa/RoyalJavaneseWeddingEventsLocation';
 import RoyalJavaneseLoveStory from './jawa/RoyalJavaneseLoveStory';
 import RoyalJavanesePhotoVideoGallery from './jawa/RoyalJavanesePhotoVideoGallery';
+import RoyalJavaneseCelebrateAnywhere from './jawa/RoyalJavaneseCelebrateAnywhere';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -409,6 +410,11 @@ export default function JavaneseParchmentTemplate({
               <RoyalJavanesePhotoVideoGallery 
                 backgroundImage="/templates/jawa/common/bg-cream-embossed.webp"
               />
+            </div>
+
+            {/* SECTION 07: CELEBRATE FROM ANYWHERE (LIVE STREAMING & WEDDING PHOTO BOOTH) */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseCelebrateAnywhere />
             </div>
 
             {/* Subtle Return to Cover Navigation */}
