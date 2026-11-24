@@ -13,6 +13,8 @@ import RoyalJavanesePhotoVideoGallery from './jawa/RoyalJavanesePhotoVideoGaller
 import RoyalJavaneseCelebrateAnywhere from './jawa/RoyalJavaneseCelebrateAnywhere';
 import RoyalJavaneseGuestGuideFamily from './jawa/RoyalJavaneseGuestGuideFamily';
 import RoyalJavaneseRsvpConfirmation from './jawa/RoyalJavaneseRsvpConfirmation';
+import RoyalJavaneseDigitalEnvelopeGifts, { BankAccountItem } from './jawa/RoyalJavaneseDigitalEnvelopeGifts';
+import RoyalJavaneseGiftConfirm from './jawa/RoyalJavaneseGiftConfirm';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -28,6 +30,11 @@ interface JavaneseParchmentTemplateProps {
   particleEffect?: ParticleEffectType;
   burstEffect?: BurstEffectType;
   showEffectSwitcher?: boolean;
+  bankAccounts?: BankAccountItem[];
+  physicalGiftRecipient?: string;
+  physicalGiftAddress?: string;
+  physicalGiftImage?: string;
+  giftConfirmRecipientWaNumber?: string;
 }
 
 export default function JavaneseParchmentTemplate({
@@ -41,6 +48,11 @@ export default function JavaneseParchmentTemplate({
   particleEffect = 'pink_blossoms',
   burstEffect = 'gold_butterflies',
   showEffectSwitcher = true,
+  bankAccounts,
+  physicalGiftRecipient,
+  physicalGiftAddress,
+  physicalGiftImage,
+  giftConfirmRecipientWaNumber,
 }: JavaneseParchmentTemplateProps) {
   const [isOpen, setIsOpen] = useState(initialOpen);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
@@ -427,6 +439,24 @@ export default function JavaneseParchmentTemplate({
             {/* SECTION 09: ROYAL JAVANESE RSVP CONFIRMATION (KONFIRMASI KEHADIRAN) */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseRsvpConfirmation guestName={guestName} />
+            </div>
+
+            {/* SECTION 10: ROYAL JAVANESE DIGITAL ENVELOPE & WEDDING GIFTS (TANDA KASIH & KADO PERNIKAHAN) */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseDigitalEnvelopeGifts
+                bankAccounts={bankAccounts}
+                physicalGiftRecipient={physicalGiftRecipient || coupleTitle}
+                physicalGiftAddress={physicalGiftAddress}
+                physicalGiftImage={physicalGiftImage}
+              />
+            </div>
+
+            {/* SECTION 11: ROYAL JAVANESE GIFT CONFIRM (KONFIRMASI PENGIRIMAN GIFT) */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseGiftConfirm
+                recipientName={coupleTitle}
+                recipientWaNumber={giftConfirmRecipientWaNumber || '6281234567890'}
+              />
             </div>
 
             {/* Subtle Return to Cover Navigation */}
