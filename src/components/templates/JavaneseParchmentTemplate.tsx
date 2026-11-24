@@ -12,6 +12,7 @@ import RoyalJavaneseLoveStory from './jawa/RoyalJavaneseLoveStory';
 import RoyalJavanesePhotoVideoGallery from './jawa/RoyalJavanesePhotoVideoGallery';
 import RoyalJavaneseCelebrateAnywhere from './jawa/RoyalJavaneseCelebrateAnywhere';
 import RoyalJavaneseGuestGuideFamily from './jawa/RoyalJavaneseGuestGuideFamily';
+import RoyalJavaneseRsvpConfirmation from './jawa/RoyalJavaneseRsvpConfirmation';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -421,6 +422,11 @@ export default function JavaneseParchmentTemplate({
             {/* SECTION 08: WEDDING GUEST GUIDE & FAMILY BLESSINGS (PANDUAN TAMU & TURUT MENGUNDANG) */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseGuestGuideFamily />
+            </div>
+
+            {/* SECTION 09: ROYAL JAVANESE RSVP CONFIRMATION (KONFIRMASI KEHADIRAN) */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseRsvpConfirmation guestName={guestName} />
             </div>
 
             {/* Subtle Return to Cover Navigation */}
