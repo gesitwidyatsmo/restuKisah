@@ -16,6 +16,7 @@ import RoyalJavaneseRsvpConfirmation from './jawa/RoyalJavaneseRsvpConfirmation'
 import RoyalJavaneseDigitalEnvelopeGifts, { BankAccountItem } from './jawa/RoyalJavaneseDigitalEnvelopeGifts';
 import RoyalJavaneseGiftConfirm from './jawa/RoyalJavaneseGiftConfirm';
 import RoyalJavaneseWishesGuestbook, { WishItem } from './jawa/RoyalJavaneseWishesGuestbook';
+import RoyalJavaneseClosingCredits from './jawa/RoyalJavaneseClosingCredits';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -38,6 +39,10 @@ interface JavaneseParchmentTemplateProps {
   giftConfirmRecipientWaNumber?: string;
   wishes?: WishItem[];
   wishCardBannerImage?: string;
+  closingCoupleTitle?: string;
+  closingMaturNuwunText?: string;
+  closingThankYouLine1?: string;
+  closingThankYouLine2?: string;
 }
 
 export default function JavaneseParchmentTemplate({
@@ -58,6 +63,10 @@ export default function JavaneseParchmentTemplate({
   giftConfirmRecipientWaNumber,
   wishes,
   wishCardBannerImage,
+  closingCoupleTitle,
+  closingMaturNuwunText,
+  closingThankYouLine1,
+  closingThankYouLine2,
 }: JavaneseParchmentTemplateProps) {
   const [isOpen, setIsOpen] = useState(initialOpen);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
@@ -469,6 +478,16 @@ export default function JavaneseParchmentTemplate({
               <RoyalJavaneseWishesGuestbook
                 defaultWishes={wishes}
                 wishCardBannerImage={wishCardBannerImage}
+              />
+            </div>
+
+            {/* SECTION 12: CLOSING & PLATFORM CREDIT (MATUR NUWUN & RESTUKISAH) */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseClosingCredits
+                coupleTitle={closingCoupleTitle || 'Nadia & Arjuna'}
+                maturNuwunText={closingMaturNuwunText}
+                thankYouLine1={closingThankYouLine1}
+                thankYouLine2={closingThankYouLine2}
               />
             </div>
 
