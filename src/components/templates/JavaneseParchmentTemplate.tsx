@@ -15,6 +15,7 @@ import RoyalJavaneseGuestGuideFamily from './jawa/RoyalJavaneseGuestGuideFamily'
 import RoyalJavaneseRsvpConfirmation from './jawa/RoyalJavaneseRsvpConfirmation';
 import RoyalJavaneseDigitalEnvelopeGifts, { BankAccountItem } from './jawa/RoyalJavaneseDigitalEnvelopeGifts';
 import RoyalJavaneseGiftConfirm from './jawa/RoyalJavaneseGiftConfirm';
+import RoyalJavaneseWishesGuestbook, { WishItem } from './jawa/RoyalJavaneseWishesGuestbook';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
@@ -35,6 +36,8 @@ interface JavaneseParchmentTemplateProps {
   physicalGiftAddress?: string;
   physicalGiftImage?: string;
   giftConfirmRecipientWaNumber?: string;
+  wishes?: WishItem[];
+  wishCardBannerImage?: string;
 }
 
 export default function JavaneseParchmentTemplate({
@@ -53,6 +56,8 @@ export default function JavaneseParchmentTemplate({
   physicalGiftAddress,
   physicalGiftImage,
   giftConfirmRecipientWaNumber,
+  wishes,
+  wishCardBannerImage,
 }: JavaneseParchmentTemplateProps) {
   const [isOpen, setIsOpen] = useState(initialOpen);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
@@ -451,11 +456,19 @@ export default function JavaneseParchmentTemplate({
               />
             </div>
 
-            {/* SECTION 11: ROYAL JAVANESE GIFT CONFIRM (KONFIRMASI PENGIRIMAN GIFT) */}
+            {/* GIFT CONFIRM: KONFIRMASI PENGIRIMAN GIFT (WHATSAPP CONFIRMATION) */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseGiftConfirm
                 recipientName={coupleTitle}
                 recipientWaNumber={giftConfirmRecipientWaNumber || '6281234567890'}
+              />
+            </div>
+
+            {/* SECTION 11: WEDDING WISHES & GUESTBOOK (DOA RESTU & BUKU TAMU DIGITAL) */}
+            <div className="w-full mt-4 sm:mt-6">
+              <RoyalJavaneseWishesGuestbook
+                defaultWishes={wishes}
+                wishCardBannerImage={wishCardBannerImage}
               />
             </div>
 
