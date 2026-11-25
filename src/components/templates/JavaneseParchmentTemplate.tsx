@@ -39,6 +39,7 @@ interface JavaneseParchmentTemplateProps {
   giftConfirmRecipientWaNumber?: string;
   wishes?: WishItem[];
   wishCardBannerImage?: string;
+  profileCardImage?: string;
   closingCoupleTitle?: string;
   closingMaturNuwunText?: string;
   closingThankYouLine1?: string;
@@ -63,6 +64,7 @@ export default function JavaneseParchmentTemplate({
   giftConfirmRecipientWaNumber,
   wishes,
   wishCardBannerImage,
+  profileCardImage = '/templates/jawa/Ornate Golden Parchment Card.webp',
   closingCoupleTitle,
   closingMaturNuwunText,
   closingThankYouLine1,
@@ -418,7 +420,7 @@ export default function JavaneseParchmentTemplate({
 
             {/* SECTION 03: ROYAL JAVANESE BRIDE & GROOM PROFILES */}
             <div className="w-full mt-4 sm:mt-6">
-              <RoyalJavaneseBrideGroomProfile />
+              <RoyalJavaneseBrideGroomProfile cardFrameImage={profileCardImage} />
             </div>
 
             {/* SECTION 04: ROYAL JAVANESE WEDDING EVENTS & LOCATION */}
