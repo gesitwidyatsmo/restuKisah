@@ -40,6 +40,13 @@ interface JavaneseParchmentTemplateProps {
   wishes?: WishItem[];
   wishCardBannerImage?: string;
   profileCardImage?: string;
+  quoteBadgeText?: string;
+  quoteBadgePlaqueImage?: string;
+  quoteArabicText?: string;
+  quoteTranslationText?: string;
+  quoteCitationText?: string;
+  quoteCardFrameImage?: string;
+  quoteFrameMode?: 'ornate_card' | 'scalable_frame' | 'vector_baroque';
   closingCoupleTitle?: string;
   closingMaturNuwunText?: string;
   closingThankYouLine1?: string;
@@ -65,6 +72,13 @@ export default function JavaneseParchmentTemplate({
   wishes,
   wishCardBannerImage,
   profileCardImage = '/templates/jawa/Ornate Golden Parchment Card.webp',
+  quoteBadgeText,
+  quoteBadgePlaqueImage,
+  quoteArabicText,
+  quoteTranslationText,
+  quoteCitationText,
+  quoteCardFrameImage,
+  quoteFrameMode,
   closingCoupleTitle,
   closingMaturNuwunText,
   closingThankYouLine1,
@@ -415,7 +429,15 @@ export default function JavaneseParchmentTemplate({
 
             {/* SECTION 02: ROYAL JAVANESE QUOTE & OPENING PRAYER */}
             <div className="w-full mt-4 sm:mt-6">
-              <RoyalJavaneseQuoteOpening />
+              <RoyalJavaneseQuoteOpening
+                badgeText={quoteBadgeText}
+                badgePlaqueImage={quoteBadgePlaqueImage}
+                arabicText={quoteArabicText}
+                translationText={quoteTranslationText}
+                citationText={quoteCitationText}
+                cardFrameImage={quoteCardFrameImage}
+                frameMode={quoteFrameMode}
+              />
             </div>
 
             {/* SECTION 03: ROYAL JAVANESE BRIDE & GROOM PROFILES */}
