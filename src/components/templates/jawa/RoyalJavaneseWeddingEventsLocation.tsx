@@ -48,8 +48,8 @@ export interface RoyalJavaneseWeddingEventsLocationProps {
 export default function RoyalJavaneseWeddingEventsLocation({
 	sectionTitle = 'The Wedding Celebration',
 	topCrestImage = '/templates/jawa/common/crest-wood-gold.webp',
-	topGarlandLeftImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
-	topGarlandRightImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
+	topGarlandLeftImage,
+	topGarlandRightImage,
 	headerDividerImage = '/templates/jawa/common/divider-gold-floral.webp',
 
 	events = [
@@ -118,29 +118,33 @@ export default function RoyalJavaneseWeddingEventsLocation({
 			<div className='absolute inset-0 bg-radial from-transparent via-[#2A170E]/3 to-[#1F1009]/20 pointer-events-none z-0' />
 
 			{/* ----------------------------------------------------------------- */}
-			{/* 2. TOP CORNER DECORATIONS: CASCADING JASMINE GARLANDS             */}
+			{/* 2. TOP CORNER DECORATIONS: CASCADING JASMINE GARLANDS (OPTIONAL)  */}
 			{/* ----------------------------------------------------------------- */}
 			{/* Left Jasmine Garland */}
-			<div
-				className='absolute pointer-events-none z-20 opacity-95'
-				style={{ left: '1.5%', top: '-1%', width: '15%' }}>
-				<img
-					src={topGarlandLeftImage}
-					alt=''
-					className='w-full h-auto object-contain filter drop-shadow-xs'
-				/>
-			</div>
+			{topGarlandLeftImage && (
+				<div
+					className='absolute pointer-events-none z-20 opacity-95'
+					style={{ left: '1.5%', top: '-1%', width: '15%' }}>
+					<img
+						src={topGarlandLeftImage}
+						alt=''
+						className='w-full h-auto object-contain filter drop-shadow-xs'
+					/>
+				</div>
+			)}
 
 			{/* Right Jasmine Garland (Mirrored) */}
-			<div
-				className='absolute pointer-events-none z-20 opacity-95 scale-x-[-1]'
-				style={{ right: '1.5%', top: '-1%', width: '15%' }}>
-				<img
-					src={topGarlandRightImage}
-					alt=''
-					className='w-full h-auto object-contain filter drop-shadow-xs'
-				/>
-			</div>
+			{topGarlandRightImage && (
+				<div
+					className='absolute pointer-events-none z-20 opacity-95 scale-x-[-1]'
+					style={{ right: '1.5%', top: '-1%', width: '15%' }}>
+					<img
+						src={topGarlandRightImage}
+						alt=''
+						className='w-full h-auto object-contain filter drop-shadow-xs'
+					/>
+				</div>
+			)}
 
 			{/* ----------------------------------------------------------------- */}
 			{/* 3. SECTION HEADER: CREST + "The Wedding Celebration" + DIVIDER     */}

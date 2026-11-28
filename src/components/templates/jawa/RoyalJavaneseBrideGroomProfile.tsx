@@ -366,7 +366,7 @@ export default function RoyalJavaneseBrideGroomProfile({
 
 	return (
 		<section
-			className={`relative w-full max-w-[440px] sm:max-w-[480px] mx-auto overflow-hidden rounded-[36px] sm:rounded-[44px] shadow-2xl border border-[#B58A45]/30 bg-[#FAF6EE] select-none text-[#2C1810] flex flex-col justify-between py-6 sm:py-8 px-3 sm:px-4.5 ${className}`}
+			className={`relative w-full max-w-[440px] sm:max-w-[480px] mx-auto overflow-hidden rounded-[36px] sm:rounded-[44px] shadow-2xl border border-[#B58A45]/30 bg-[#FAF6EE] select-none text-[#2C1810] flex flex-col justify-between py-6 sm:py-8 px-4 sm:px-5.5 ${className}`}
 			aria-label='Profil Pengantin Pria dan Wanita'>
 			{/* ----------------------------------------------------------------- */}
 			{/* 1. BACKGROUND: EMBOSSED JAVANESE FLORAL CREAM PAPER (MASTER FILE)  */}
@@ -379,29 +379,6 @@ export default function RoyalJavaneseBrideGroomProfile({
 
 			{/* Warm Ambient Vignette for Keraton Royal Feel */}
 			<div className='absolute inset-0 bg-radial from-transparent via-[#2A170E]/3 to-[#1F1009]/20 pointer-events-none z-0' />
-
-			{/* ----------------------------------------------------------------- */}
-			{/* 2. TOP CORNER DECORATIONS: ELEGANT CASCADING JASMINE GARLAND      */}
-			{/* ----------------------------------------------------------------- */}
-			<div
-				className='absolute pointer-events-none z-20 opacity-90'
-				style={{ left: '4%', top: '-2%', width: '18%' }}>
-				<img
-					src='/templates/jawa/profile/jasmine-garland.webp'
-					alt=''
-					className='w-full h-auto object-contain filter drop-shadow-xs'
-				/>
-			</div>
-
-			<div
-				className='absolute pointer-events-none z-20 opacity-90 scale-x-[-1]'
-				style={{ right: '4%', top: '-2%', width: '18%' }}>
-				<img
-					src='/templates/jawa/profile/jasmine-garland.webp'
-					alt=''
-					className='w-full h-auto object-contain filter drop-shadow-xs'
-				/>
-			</div>
 
 			{/* ----------------------------------------------------------------- */}
 			{/* 3. SECTION HEADER: "The Bride & The Groom" + ORNAMENT + SUBTITLE */}
@@ -422,7 +399,7 @@ export default function RoyalJavaneseBrideGroomProfile({
 			{/* ----------------------------------------------------------------- */}
 			{/* 4. MAIN PROFILES CONTAINER                                        */}
 			{/* ----------------------------------------------------------------- */}
-			<div className='relative z-10 w-full flex-1 flex flex-col justify-center px-1 sm:px-2 mt-4 sm:mt-5 space-y-4 sm:space-y-5'>
+			<div className='relative z-10 w-full flex-1 flex flex-col justify-center px-3 sm:px-4.5 mt-4 sm:mt-5 space-y-4 sm:space-y-5'>
 				{layoutMode === 'independent_stacked' ? (
 					<>
 						{/* A. THE BRIDE INDEPENDENT ROYAL CARD */}
@@ -685,7 +662,7 @@ export default function RoyalJavaneseBrideGroomProfile({
 			{/* ----------------------------------------------------------------- */}
 			{/* 5. BOTTOM ORNAMENT: ORNATE JAVANESE BATIK GOLD BORDER BASE        */}
 			{/* ----------------------------------------------------------------- */}
-			<div className='relative z-10 pointer-events-none mt-auto pt-4 sm:pt-6 -mx-3 sm:-mx-4.5 -mb-6 sm:-mb-8 w-[calc(100%+1.5rem)] sm:w-[calc(100%+2.25rem)]'>
+			<div className='relative z-10 pointer-events-none mt-auto pt-4 sm:pt-6 -mx-4 sm:-mx-5.5 -mb-6 sm:-mb-8 w-[calc(100%+2rem)] sm:w-[calc(100%+2.75rem)]'>
 				<img
 					src={bottomOrnamentImage}
 					alt='Ornate Javanese Batik Gold Border'

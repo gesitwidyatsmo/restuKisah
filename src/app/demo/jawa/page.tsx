@@ -5,6 +5,9 @@ import dynamic from 'next/dynamic';
 import { useSearchParams } from 'next/navigation';
 import { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
+import { mockJavaneseWeddingData } from '@/lib/mock-data-jawa';
+import { mockWedding } from '@/lib/mock-data';
+import { submitRsvpAction, submitWishAction } from '@/lib/wedding-data-service';
 
 const JavaneseParchmentTemplate = dynamic(
   () => import('@/components/templates/JavaneseParchmentTemplate'),
@@ -30,13 +33,25 @@ function DemoJawaContent() {
 
   return (
     <JavaneseParchmentTemplate
+      invitationData={mockJavaneseWeddingData}
       guestName={guest}
       coverMode={coverMode}
-      coupleTitle="Miko dan Angela"
       initialOpen={openParam}
       particleEffect={particleParam}
       burstEffect={burstParam}
       showEffectSwitcher={true}
+      onRsvpSubmit={async (data) => {
+        await submitRsvpAction(
+          mockWedding.id,
+          data.name,
+          data.attendance === 'hadir' ? 'attending' : 'declined',
+          data.pax,
+          data.message
+        );
+      }}
+      onAddWish={async (wish) => {
+        await submitWishAction(mockWedding.id, wish.senderName, wish.message);
+      }}
     />
   );
 }

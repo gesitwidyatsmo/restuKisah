@@ -31,7 +31,7 @@ export interface RoyalJavaneseQuoteOpeningProps {
  * Menggantikan file statis/flattened "quote-parchment-frame.webp" dengan susunan
  * aset modular:
  * 1. Latar belakang batik embossed keraton gelap (bg-batik-dark.webp)
- * 2. Untaian bunga melati gantung di sudut atas (jasmine-cascade-hanging.webp)
+ * 2. Background batik keraton dan ornamen islami elegan
  * 3. Kartu piagam bingkai ukir emas transparan (Ornate Golden Parchment Frame.webp)
  * 4. Tipografi responsif (Amiri untuk kaligrafi Arab, Cormorant Garamond untuk terjemahan, Cinzel untuk badge & sitasi)
  */

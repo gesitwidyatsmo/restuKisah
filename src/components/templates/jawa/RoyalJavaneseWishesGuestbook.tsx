@@ -84,8 +84,12 @@ export default function RoyalJavaneseWishesGuestbook({
 	const [name, setName] = useState('');
 	const [message, setMessage] = useState('');
 
-	// Wishes list state
-	const [wishes, setWishes] = useState<WishItem[]>(defaultWishes);
+	// Wishes list state (menggabungkan wish baru lokal & prop defaultWishes tanpa useEffect)
+	const [localAddedWishes, setLocalAddedWishes] = useState<WishItem[]>([]);
+	const wishes = [
+		...localAddedWishes.filter((lw) => !defaultWishes.some((dw) => dw.id === lw.id)),
+		...defaultWishes,
+	];
 
 	// Notification feedback
 	const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -108,7 +112,9 @@ export default function RoyalJavaneseWishesGuestbook({
 			timestamp: 'Baru saja',
 		};
 
-		setWishes([newWish, ...wishes]);
+		if (!onAddWish) {
+			setLocalAddedWishes((prev) => [newWish, ...prev]);
+		}
 		setMessage('');
 
 		// Trigger golden celebratory confetti burst
@@ -357,6 +363,11 @@ export default function RoyalJavaneseWishesGuestbook({
 			{/* 6. WISHES LIST (GUESTBOOK FEED WITH NOTCHED CARDS & ROSETTES)     */}
 			{/* ----------------------------------------------------------------- */}
 			<div className='relative z-10 w-full flex flex-col gap-2.5 sm:gap-3 my-1'>
+				{wishes.length === 0 ? (
+					<div className='p-5 rounded-2xl border border-[#D4AF37]/40 bg-[#FAF6EE]/80 text-center text-xs italic text-[#553621]'>
+						Jadilah tamu pertama yang mengirimkan doa dan ucapan restu untuk kedua mempelai.
+					</div>
+				) : null}
 				<AnimatePresence initial={false}>
 					{wishes.map((wish, index) => (
 						<motion.div

@@ -172,3 +172,158 @@ export interface InvitationSetting {
   qris_image_url?: string;
   gift_address?: string;
 }
+
+// ==============================================================================
+// RELATIONAL TEMPLATE ENTITIES (MIGRATION 20261126)
+// ==============================================================================
+
+export interface WeddingTemplateSetting {
+  id: string;
+  wedding_id: string;
+  theme_id: string;
+  cover_mode: 'adat_jawa_cover' | 'classic_arch';
+  particle_effect: string;
+  burst_effect: string;
+  quote_badge_text?: string;
+  quote_arabic_text?: string;
+  quote_translation_text?: string;
+  quote_citation_text?: string;
+  quote_frame_mode?: 'scalable_frame' | 'ornate_card' | 'vector_baroque';
+  audio_url?: string;
+  closing_matur_nuwun_text?: string;
+  closing_thank_you_line1?: string;
+  closing_thank_you_line2?: string;
+  enable_photobooth?: boolean;
+  custom_theme_config?: Record<string, any>;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface WeddingCouple {
+  id: string;
+  wedding_id: string;
+  groom_full_name: string;
+  groom_nickname: string;
+  groom_child_order?: string;
+  groom_father_name: string;
+  groom_mother_name: string;
+  groom_instagram?: string;
+  groom_instagram_url?: string;
+  groom_photo_url?: string;
+  bride_full_name: string;
+  bride_nickname: string;
+  bride_child_order?: string;
+  bride_father_name: string;
+  bride_mother_name: string;
+  bride_instagram?: string;
+  bride_instagram_url?: string;
+  bride_photo_url?: string;
+  couple_hero_photo_url?: string;
+  created_at?: string;
+  updated_at?: string;
+}
+
+export interface WeddingEvent {
+  id: string;
+  wedding_id: string;
+  event_type: string;
+  title: string;
+  subtitle?: string;
+  event_date: string;
+  start_time: string;
+  end_time?: string;
+  timezone?: string;
+  venue_name: string;
+  address: string;
+  google_maps_url?: string;
+  illustration_url?: string;
+  order_index: number;
+  created_at?: string;
+}
+
+export interface WeddingStory {
+  id: string;
+  wedding_id: string;
+  step_number: string;
+  title: string;
+  description: string;
+  photo_url: string;
+  order_index: number;
+  created_at?: string;
+}
+
+export interface WeddingGallery {
+  id: string;
+  wedding_id: string;
+  media_type: 'photo' | 'video';
+  layout_slot?: string;
+  title: string;
+  subtitle?: string;
+  media_url: string;
+  thumbnail_url?: string;
+  aspect_ratio?: string;
+  flex_basis?: number;
+  video_duration?: string;
+  order_index: number;
+  created_at?: string;
+}
+
+export interface WeddingPaymentMethod {
+  id: string;
+  wedding_id: string;
+  method_type: 'bank' | 'qris' | 'gift';
+  bank_slug?: string;
+  bank_title_badge?: string;
+  account_number?: string;
+  account_holder?: string;
+  qris_image_url?: string;
+  physical_recipient_name?: string;
+  physical_address?: string;
+  recipient_phone?: string;
+  order_index: number;
+  created_at?: string;
+}
+
+export interface WeddingGuestGuide {
+  id: string;
+  wedding_id: string;
+  dresscode_title?: string;
+  dresscode_description?: string;
+  dresscode_swatches?: Array<{
+    id: string;
+    name: string;
+    alias: string;
+    hex: string;
+    border?: string;
+    textDark?: boolean;
+    recommendation: string;
+  }>;
+  etiquette_items?: Array<{
+    id: string;
+    icon: string;
+    title: string;
+    shortDesc: string;
+  }>;
+  family_members?: {
+    brideFamily?: { label: string; members: string[] };
+    groomFamily?: { label: string; members: string[] };
+  };
+  live_stream_youtube_url?: string;
+  live_stream_zoom_url?: string;
+  zoom_meeting_id?: string;
+  zoom_passcode?: string;
+  updated_at?: string;
+}
+
+export interface WeddingGiftConfirmation {
+  id: string;
+  wedding_id: string;
+  guest_id?: string;
+  sender_name: string;
+  bank_name?: string;
+  nominal?: number;
+  proof_receipt_url?: string;
+  message?: string;
+  created_at?: string;
+}
+

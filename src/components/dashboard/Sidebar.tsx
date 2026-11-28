@@ -2,21 +2,23 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { 
-  LayoutDashboard, 
-  FileText, 
-  CheckSquare, 
-  Wallet, 
-  Users, 
-  Sparkles, 
-  Clock, 
-  ExternalLink, 
+import {
+  LayoutDashboard,
+  FileText,
+  CheckSquare,
+  Wallet,
+  Users,
+  Sparkles,
+  Clock,
+  ExternalLink,
   Heart,
   ChevronRight,
   Home,
-  X
+  X,
+  Plus,
 } from 'lucide-react';
-import { mockWedding } from '@/lib/mock-data';
+import { useDashboard } from './DashboardContext';
+import { formatWeddingDateIndo } from '@/lib/wedding-data-service';
 
 const navItems = [
   {
@@ -70,6 +72,8 @@ interface SidebarProps {
 
 export default function Sidebar({ isMobileOpen = false, onCloseMobile }: SidebarProps) {
   const pathname = usePathname();
+  const { wedding, userWeddings, switchWedding } = useDashboard();
+  const formattedShortDate = formatWeddingDateIndo(wedding.wedding_date, 'short');
 
   const sidebarContent = (
     <div className="flex flex-col justify-between h-full bg-white border-r-2 border-[#1C1917] w-72">
@@ -91,7 +95,6 @@ export default function Sidebar({ isMobileOpen = false, onCloseMobile }: Sidebar
               </div>
             </Link>
 
-            {/* Mobile Close Button */}
             {onCloseMobile && (
               <button
                 onClick={onCloseMobile}
@@ -104,24 +107,54 @@ export default function Sidebar({ isMobileOpen = false, onCloseMobile }: Sidebar
           </div>
 
           {/* Wedding Switcher Card */}
-          <div className="mt-4 p-3 rounded-xl bg-rose-50 border-2 border-[#1C1917] shadow-hard-sm">
+          <div className="mt-4 p-3 rounded-xl bg-rose-50 border-2 border-[#1C1917] shadow-hard-sm space-y-1.5">
             <div className="flex items-center justify-between">
               <span className="text-[11px] font-bold uppercase tracking-wider text-rose-800">
                 Pernikahan Aktif
               </span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
+              <span className="w-2 h-2 rounded-full bg-emerald-500" />
             </div>
-            <div className="font-serif font-bold text-sm text-[#1C1917] mt-1">
-              {mockWedding.bride_nickname} & {mockWedding.groom_nickname}
-            </div>
-            <div className="text-[11px] font-medium text-stone-600">
-              19 Des 2026 • {mockWedding.location_city}
+
+            {userWeddings.length > 1 ? (
+              <select
+                aria-label="Pilih proyek pernikahan"
+                value={wedding.id}
+                onChange={(e) => void switchWedding(e.target.value)}
+                className="w-full px-2 py-1.5 rounded-lg border border-[#1C1917] bg-white font-serif font-bold text-xs text-[#1C1917]"
+              >
+                {userWeddings.map((item) => (
+                  <option key={item.wedding.id} value={item.wedding.id}>
+                    {item.wedding.bride_nickname || item.wedding.bride_name} &{' '}
+                    {item.wedding.groom_nickname || item.wedding.groom_name}
+                  </option>
+                ))}
+              </select>
+            ) : (
+              <div className="font-serif font-bold text-sm text-[#1C1917]">
+                {wedding.bride_nickname || wedding.bride_name} &{' '}
+                {wedding.groom_nickname || wedding.groom_name}
+              </div>
+            )}
+
+            <div className="flex items-center justify-between gap-2 text-[11px] font-medium text-stone-600">
+              <span className="truncate">
+                {formattedShortDate} • {wedding.location_city}
+              </span>
+              <Link
+                href="/onboarding?mode=new"
+                onClick={onCloseMobile}
+                className="inline-flex items-center gap-0.5 text-[10px] font-bold text-rose-700 hover:underline shrink-0"
+                title="Buat proyek pernikahan baru"
+              >
+                <Plus className="w-3 h-3" />
+                <span>Baru</span>
+              </Link>
             </div>
           </div>
         </div>
 
         {/* Navigation Links */}
-        <nav className="p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-270px)]">
+        <nav className="p-4 space-y-1.5 overflow-y-auto max-h-[calc(100vh-290px)]">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             const Icon = item.icon;
@@ -155,7 +188,7 @@ export default function Sidebar({ isMobileOpen = false, onCloseMobile }: Sidebar
       {/* Footer Quick Links */}
       <div className="p-4 border-t-2 border-[#1C1917] bg-[#FAF8F5] space-y-2">
         <Link
-          href={`/demo/${mockWedding.slug}`}
+          href={`/${wedding.slug}`}
           target="_blank"
           className="flex items-center justify-between w-full px-3.5 py-2.5 text-xs font-bold bg-amber-200 border-2 border-[#1C1917] rounded-xl shadow-hard-sm btn-pressable text-[#1C1917] min-h-[40px]"
         >
@@ -179,21 +212,16 @@ export default function Sidebar({ isMobileOpen = false, onCloseMobile }: Sidebar
 
   return (
     <>
-      {/* 1. Desktop Persistent Sidebar (≥ 1024px) */}
       <aside className="hidden lg:block w-72 sticky top-0 h-screen shrink-0 z-30">
         {sidebarContent}
       </aside>
 
-      {/* 2. Mobile & Tablet Slide-Over Drawer (< 1024px) */}
       {isMobileOpen && (
         <div className="fixed inset-0 z-50 lg:hidden">
-          {/* Backdrop Blur Overlay */}
-          <div 
+          <div
             className="fixed inset-0 bg-black/40 backdrop-blur-xs transition-opacity"
             onClick={onCloseMobile}
           />
-
-          {/* Drawer Panel */}
           <div className="fixed inset-y-0 left-0 w-72 shadow-hard-xl animate-in slide-in-from-left duration-200">
             {sidebarContent}
           </div>

@@ -7,20 +7,40 @@
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
--- 2. CUSTOM ENUMS
-CREATE TYPE wedding_status AS ENUM ('planning', 'published', 'completed', 'archived');
-CREATE TYPE member_role AS ENUM ('owner', 'partner', 'organizer', 'collaborator', 'receptionist');
-CREATE TYPE admin_doc_stage AS ENUM ('rt_rw', 'kelurahan', 'kesehatan', 'kua_disdukcapil');
-CREATE TYPE admin_doc_status AS ENUM ('not_started', 'in_progress', 'ready_to_submit', 'completed');
-CREATE TYPE checklist_status AS ENUM ('todo', 'in_progress', 'done');
-CREATE TYPE budget_category AS ENUM (
-  'venue', 'catering', 'decoration', 'attire_mua', 
-  'documentation', 'entertainment', 'invitation_souvenir', 
-  'legal_admin', 'emergency_fund', 'other'
-);
-CREATE TYPE payment_status AS ENUM ('unpaid', 'down_payment', 'paid_full');
-CREATE TYPE rsvp_status AS ENUM ('pending', 'attending', 'declined');
-CREATE TYPE guest_category AS ENUM ('vip', 'keluarga', 'sahabat', 'teman_kantor', 'tetangga', 'umum');
+-- 2. CUSTOM ENUMS (IDEMPOTENT - SAFE TO RUN MULTIPLE TIMES)
+DO $$ BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'wedding_status') THEN
+    CREATE TYPE wedding_status AS ENUM ('planning', 'published', 'completed', 'archived');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'member_role') THEN
+    CREATE TYPE member_role AS ENUM ('owner', 'partner', 'organizer', 'collaborator', 'receptionist');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'admin_doc_stage') THEN
+    CREATE TYPE admin_doc_stage AS ENUM ('rt_rw', 'kelurahan', 'kesehatan', 'kua_disdukcapil');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'admin_doc_status') THEN
+    CREATE TYPE admin_doc_status AS ENUM ('not_started', 'in_progress', 'ready_to_submit', 'completed');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'checklist_status') THEN
+    CREATE TYPE checklist_status AS ENUM ('todo', 'in_progress', 'done');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'budget_category') THEN
+    CREATE TYPE budget_category AS ENUM (
+      'venue', 'catering', 'decoration', 'attire_mua', 
+      'documentation', 'entertainment', 'invitation_souvenir', 
+      'legal_admin', 'emergency_fund', 'other'
+    );
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'payment_status') THEN
+    CREATE TYPE payment_status AS ENUM ('unpaid', 'down_payment', 'paid_full');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'rsvp_status') THEN
+    CREATE TYPE rsvp_status AS ENUM ('pending', 'attending', 'declined');
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'guest_category') THEN
+    CREATE TYPE guest_category AS ENUM ('vip', 'keluarga', 'sahabat', 'teman_kantor', 'tetangga', 'umum');
+  END IF;
+END $$;
 
 -- ==============================================================================
 -- 3. TABLES DEFINITION

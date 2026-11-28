@@ -12,7 +12,7 @@ import RoyalJavaneseLoveStory from './jawa/RoyalJavaneseLoveStory';
 import RoyalJavanesePhotoVideoGallery from './jawa/RoyalJavanesePhotoVideoGallery';
 import RoyalJavaneseCelebrateAnywhere from './jawa/RoyalJavaneseCelebrateAnywhere';
 import RoyalJavaneseGuestGuideFamily from './jawa/RoyalJavaneseGuestGuideFamily';
-import RoyalJavaneseRsvpConfirmation from './jawa/RoyalJavaneseRsvpConfirmation';
+import RoyalJavaneseRsvpConfirmation, { RsvpSubmissionData } from './jawa/RoyalJavaneseRsvpConfirmation';
 import RoyalJavaneseDigitalEnvelopeGifts, { BankAccountItem } from './jawa/RoyalJavaneseDigitalEnvelopeGifts';
 import RoyalJavaneseGiftConfirm from './jawa/RoyalJavaneseGiftConfirm';
 import RoyalJavaneseWishesGuestbook, { WishItem } from './jawa/RoyalJavaneseWishesGuestbook';
@@ -20,8 +20,10 @@ import RoyalJavaneseClosingCredits from './jawa/RoyalJavaneseClosingCredits';
 import FallingParticlesCanvas, { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
 import OpeningBurstEffect, { BurstEffectType } from '@/components/effects/OpeningBurstEffect';
 import EffectSwitcherPill from '@/components/effects/EffectSwitcherPill';
+import { FullWeddingInvitationPayload } from '@/types/wedding-invitation';
 
 interface JavaneseParchmentTemplateProps {
+  invitationData?: FullWeddingInvitationPayload;
   guestName?: string;
   onOpen?: () => void;
   coupleTitle?: string;
@@ -51,11 +53,16 @@ interface JavaneseParchmentTemplateProps {
   closingMaturNuwunText?: string;
   closingThankYouLine1?: string;
   closingThankYouLine2?: string;
+  onRsvpSubmit?: (data: RsvpSubmissionData) => Promise<void> | void;
+  onAddWish?: (wish: WishItem) => Promise<void> | void;
 }
 
 export default function JavaneseParchmentTemplate({
+  invitationData,
   guestName = 'Yogi dan Ratna',
   onOpen,
+  onRsvpSubmit,
+  onAddWish,
   coupleTitle = 'Miko dan Angela',
   weddingDate = 'Saturday, 21 June 2025',
   heroImage = '/templates/jawa/hero/portrait-couple.webp',
@@ -84,6 +91,34 @@ export default function JavaneseParchmentTemplate({
   closingThankYouLine1,
   closingThankYouLine2,
 }: JavaneseParchmentTemplateProps) {
+  // Merge nilai dari invitationData jika disediakan
+  const resolvedCoupleTitle = invitationData?.couples?.coupleTitle || coupleTitle;
+  const resolvedWeddingDate = invitationData?.weddingDateFormatted || weddingDate;
+  const resolvedHeroImage = invitationData?.couples?.coupleHeroPhoto || heroImage;
+  const resolvedCoverMode = invitationData?.templateSettings?.coverMode || coverMode;
+  const resolvedParticle = invitationData?.templateSettings?.particleEffect || particleEffect;
+  const resolvedBurst = invitationData?.templateSettings?.burstEffect || burstEffect;
+  const resolvedBankAccounts = invitationData?.paymentMethods?.bankAccounts ?? bankAccounts;
+  const resolvedGiftAddress =
+    invitationData?.paymentMethods?.physicalGift?.address !== undefined
+      ? invitationData.paymentMethods.physicalGift.address
+      : physicalGiftAddress;
+  const resolvedGiftRecipient =
+    invitationData?.paymentMethods?.physicalGift?.recipient ||
+    physicalGiftRecipient ||
+    resolvedCoupleTitle;
+  const resolvedWaNumber =
+    invitationData?.paymentMethods?.confirmationWaNumber !== undefined
+      ? invitationData.paymentMethods.confirmationWaNumber
+      : giftConfirmRecipientWaNumber;
+  const resolvedQuoteArabic = invitationData?.templateSettings?.quoteArabicText || quoteArabicText;
+  const resolvedQuoteTranslation = invitationData?.templateSettings?.quoteTranslationText || quoteTranslationText;
+  const resolvedQuoteCitation = invitationData?.templateSettings?.quoteCitationText || quoteCitationText;
+  const resolvedQuoteBadge = invitationData?.templateSettings?.quoteBadgeText || quoteBadgeText;
+  const resolvedClosingTitle = invitationData?.couples?.coupleTitle || closingCoupleTitle || resolvedCoupleTitle;
+  const resolvedMaturNuwun = invitationData?.templateSettings?.closingMaturNuwunText || closingMaturNuwunText;
+  const resolvedClosingLine1 = invitationData?.templateSettings?.closingThankYouLine1 || closingThankYouLine1;
+  const resolvedClosingLine2 = invitationData?.templateSettings?.closingThankYouLine2 || closingThankYouLine2;
   const [isOpen, setIsOpen] = useState(initialOpen);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [isGununganActive, setIsGununganActive] = useState(false);
@@ -311,7 +346,7 @@ export default function JavaneseParchmentTemplate({
                 Pawiwahan Ageng
               </h2>
               <p className="font-serif italic text-xs text-stone-700">
-                Membuka Lembaran Suci {coupleTitle}
+                Membuka Lembaran Suci {resolvedCoupleTitle}
               </p>
             </motion.div>
           </motion.div>
@@ -323,14 +358,14 @@ export default function JavaneseParchmentTemplate({
       {/* ========================================================= */}
       <AnimatePresence mode="wait">
         {!isOpen ? (
-          coverMode === 'adat_jawa_cover' ? (
+          resolvedCoverMode === 'adat_jawa_cover' ? (
             <JavaneseAnimatedCoverModal 
               key="cover-modal-animated"
               isOpen={isOpen}
               onOpen={(origin) => handleOpenInvitation(origin)}
               guestName={guestName}
-              coupleTitle={coupleTitle}
-              weddingDate={weddingDate}
+              coupleTitle={resolvedCoupleTitle}
+              weddingDate={resolvedWeddingDate}
               particleType={currentParticle}
               burstType={currentBurst}
             />
@@ -367,16 +402,16 @@ export default function JavaneseParchmentTemplate({
                     </span>
                     <div className="relative mx-auto w-44 sm:w-52 aspect-[3/4.2] rounded-t-[110px] sm:rounded-t-[130px] rounded-b-md border-3 border-[#2C1810] overflow-hidden shadow-md bg-[#2C1810]">
                       <img 
-                        src={heroImage}
-                        alt={coupleTitle}
+                        src={resolvedHeroImage}
+                        alt={resolvedCoupleTitle}
                         className="w-full h-full object-cover object-top hover:scale-105 transition-transform duration-700" 
                       />
                     </div>
                     <h1 className="font-serif text-2xl sm:text-3xl font-bold text-[#1C1917] tracking-wider mt-3.5 mb-1 leading-tight">
-                      {coupleTitle}
+                      {resolvedCoupleTitle}
                     </h1>
                     <p className="font-serif text-[11px] sm:text-xs font-semibold text-[#8C6D46] tracking-[0.18em] uppercase">
-                      {weddingDate}
+                      {resolvedWeddingDate}
                     </p>
                   </div>
 
@@ -419,22 +454,22 @@ export default function JavaneseParchmentTemplate({
           >
             {/* SECTION 01: ROYAL JAVANESE WEDDING HERO & COUNTDOWN COMPONENT */}
             <RoyalJavaneseHeroCountdown 
-              coupleTitle={coupleTitle}
-              weddingDateFormatted={weddingDate || 'Saturday, 21 June 2025'}
-              targetDateISO="2025-06-21T09:00:00+07:00"
-              heroImage="/templates/jawa/hero/portrait-couple.webp"
+              coupleTitle={resolvedCoupleTitle}
+              weddingDateFormatted={resolvedWeddingDate}
+              targetDateISO={invitationData?.events?.[0] ? `${invitationData.events[0].date}T${invitationData.events[0].time?.slice(0,5) || '09:00'}:00` : "2025-06-21T09:00:00+07:00"}
+              heroImage={resolvedHeroImage}
               calendarButtonText="Save the Date"
-              eventLocation="Gedung Sasana Kriya, Taman Mini Indonesia Indah, Jakarta"
+              eventLocation={invitationData?.events?.[0]?.venueName || "Gedung Sasana Kriya, Taman Mini Indonesia Indah, Jakarta"}
             />
 
             {/* SECTION 02: ROYAL JAVANESE QUOTE & OPENING PRAYER */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseQuoteOpening
-                badgeText={quoteBadgeText}
+                badgeText={resolvedQuoteBadge}
                 badgePlaqueImage={quoteBadgePlaqueImage}
-                arabicText={quoteArabicText}
-                translationText={quoteTranslationText}
-                citationText={quoteCitationText}
+                arabicText={resolvedQuoteArabic}
+                translationText={resolvedQuoteTranslation}
+                citationText={resolvedQuoteCitation}
                 cardFrameImage={quoteCardFrameImage}
                 frameMode={quoteFrameMode}
               />
@@ -442,58 +477,96 @@ export default function JavaneseParchmentTemplate({
 
             {/* SECTION 03: ROYAL JAVANESE BRIDE & GROOM PROFILES */}
             <div className="w-full mt-4 sm:mt-6">
-              <RoyalJavaneseBrideGroomProfile cardFrameImage={profileCardImage} />
+              <RoyalJavaneseBrideGroomProfile 
+                cardFrameImage={profileCardImage}
+                brideName={invitationData?.couples?.bride?.fullName}
+                brideRelation={invitationData?.couples?.bride?.relation}
+                brideFather={invitationData?.couples?.bride?.father}
+                brideMother={invitationData?.couples?.bride?.mother}
+                brideInstagram={invitationData?.couples?.bride?.instagram}
+                brideInstagramUrl={invitationData?.couples?.bride?.instagramUrl}
+                brideImage={invitationData?.couples?.bride?.photo}
+                groomName={invitationData?.couples?.groom?.fullName}
+                groomRelation={invitationData?.couples?.groom?.relation}
+                groomFather={invitationData?.couples?.groom?.father}
+                groomMother={invitationData?.couples?.groom?.mother}
+                groomInstagram={invitationData?.couples?.groom?.instagram}
+                groomInstagramUrl={invitationData?.couples?.groom?.instagramUrl}
+                groomImage={invitationData?.couples?.groom?.photo}
+              />
             </div>
 
             {/* SECTION 04: ROYAL JAVANESE WEDDING EVENTS & LOCATION */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseWeddingEventsLocation 
                 cardFrameImage="/templates/jawa/events/card-banner.webp"
+                events={invitationData?.events}
+                googleMapsUrl={invitationData?.events?.[0]?.googleMapsUrl}
+                locationVenueName={invitationData?.events?.[0]?.venueName}
+                locationAddress={invitationData?.events?.[0]?.address}
               />
             </div>
 
             {/* SECTION 05: ROYAL JAVANESE OUR LOVE STORY TIMELINE */}
             <div className="w-full mt-4 sm:mt-6">
-              <RoyalJavaneseLoveStory />
+              <RoyalJavaneseLoveStory stories={invitationData?.loveStories} />
             </div>
 
             {/* SECTION 06: ROYAL JAVANESE PHOTO & VIDEO GALLERY */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavanesePhotoVideoGallery 
                 backgroundImage="/templates/jawa/common/bg-cream-embossed.webp"
+                featuredPhoto={invitationData?.gallery?.featuredPhoto}
+                gridRow1={invitationData?.gallery?.photos ? invitationData.gallery.photos.slice(0, 3) : undefined}
+                gridRow2={invitationData?.gallery?.photos ? invitationData.gallery.photos.slice(3, 6) : undefined}
+                videoTeaser={invitationData?.gallery?.videoTeaser}
               />
             </div>
 
             {/* SECTION 07: CELEBRATE FROM ANYWHERE (LIVE STREAMING & WEDDING PHOTO BOOTH) */}
             <div className="w-full mt-4 sm:mt-6">
-              <RoyalJavaneseCelebrateAnywhere />
+              <RoyalJavaneseCelebrateAnywhere 
+                weddingDateText={invitationData?.guestGuide?.liveStreaming?.weddingDateText}
+                weddingTimeText={invitationData?.guestGuide?.liveStreaming?.weddingTimeText}
+                youtubeUrl={invitationData?.guestGuide?.liveStreaming?.youtubeUrl}
+                zoomUrl={invitationData?.guestGuide?.liveStreaming?.zoomUrl}
+                zoomMeetingId={invitationData?.guestGuide?.liveStreaming?.zoomMeetingId}
+                zoomPasscode={invitationData?.guestGuide?.liveStreaming?.zoomPasscode}
+              />
             </div>
 
             {/* SECTION 08: WEDDING GUEST GUIDE & FAMILY BLESSINGS (PANDUAN TAMU & TURUT MENGUNDANG) */}
             <div className="w-full mt-4 sm:mt-6">
-              <RoyalJavaneseGuestGuideFamily />
+              <RoyalJavaneseGuestGuideFamily 
+                swatches={invitationData?.guestGuide?.swatches}
+                etiquettes={invitationData?.guestGuide?.etiquettes}
+                brideFamily={invitationData?.guestGuide?.family?.brideFamily}
+                groomFamily={invitationData?.guestGuide?.family?.groomFamily}
+              />
             </div>
 
             {/* SECTION 09: ROYAL JAVANESE RSVP CONFIRMATION (KONFIRMASI KEHADIRAN) */}
             <div className="w-full mt-4 sm:mt-6">
-              <RoyalJavaneseRsvpConfirmation guestName={guestName} />
+              <RoyalJavaneseRsvpConfirmation guestName={guestName} onSubmit={onRsvpSubmit} />
             </div>
 
             {/* SECTION 10: ROYAL JAVANESE DIGITAL ENVELOPE & WEDDING GIFTS (TANDA KASIH & KADO PERNIKAHAN) */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseDigitalEnvelopeGifts
-                bankAccounts={bankAccounts}
-                physicalGiftRecipient={physicalGiftRecipient || coupleTitle}
-                physicalGiftAddress={physicalGiftAddress}
+                bankAccounts={resolvedBankAccounts}
+                physicalGiftRecipient={resolvedGiftRecipient}
+                physicalGiftAddress={resolvedGiftAddress}
+                physicalGiftPhone={invitationData?.paymentMethods?.physicalGift?.phone}
                 physicalGiftImage={physicalGiftImage}
+                confirmationWaNumber={resolvedWaNumber}
               />
             </div>
 
             {/* GIFT CONFIRM: KONFIRMASI PENGIRIMAN GIFT (WHATSAPP CONFIRMATION) */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseGiftConfirm
-                recipientName={coupleTitle}
-                recipientWaNumber={giftConfirmRecipientWaNumber || '6281234567890'}
+                recipientName={resolvedCoupleTitle}
+                recipientWaNumber={resolvedWaNumber ?? (invitationData ? '' : '6281234567890')}
               />
             </div>
 
@@ -501,6 +574,7 @@ export default function JavaneseParchmentTemplate({
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseWishesGuestbook
                 defaultWishes={wishes}
+                onAddWish={onAddWish}
                 wishCardBannerImage={wishCardBannerImage}
               />
             </div>
@@ -508,10 +582,10 @@ export default function JavaneseParchmentTemplate({
             {/* SECTION 12: CLOSING & PLATFORM CREDIT (MATUR NUWUN & RESTUKISAH) */}
             <div className="w-full mt-4 sm:mt-6">
               <RoyalJavaneseClosingCredits
-                coupleTitle={closingCoupleTitle || 'Nadia & Arjuna'}
-                maturNuwunText={closingMaturNuwunText}
-                thankYouLine1={closingThankYouLine1}
-                thankYouLine2={closingThankYouLine2}
+                coupleTitle={resolvedClosingTitle}
+                maturNuwunText={resolvedMaturNuwun}
+                thankYouLine1={resolvedClosingLine1}
+                thankYouLine2={resolvedClosingLine2}
               />
             </div>
 

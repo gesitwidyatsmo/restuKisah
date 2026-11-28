@@ -1,7 +1,8 @@
 'use client';
 
-import { Suspense, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
+import { Suspense, useState, useEffect } from 'react';
+import dynamic from 'next/dynamic';
+import { useParams, useSearchParams } from 'next/navigation';
 import confetti from 'canvas-confetti';
 import { 
   Heart, 
@@ -19,11 +20,49 @@ import {
 } from 'lucide-react';
 import { mockWedding, mockWishes } from '@/lib/mock-data';
 import { Wish } from '@/types/database';
+import { getWeddingInvitationBySlug } from '@/lib/invitation-service';
+import { FullWeddingInvitationPayload } from '@/types/wedding-invitation';
+import { 
+  getStoredWeddingData, 
+  submitWishAction, 
+  submitRsvpAction 
+} from '@/lib/wedding-data-service';
+
+const JavaneseParchmentTemplate = dynamic(
+  () => import('@/components/templates/JavaneseParchmentTemplate'),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center font-serif text-[#8C6D46] font-bold">
+        Memuat Undangan Adat Jawa...
+      </div>
+    ),
+  }
+);
 
 function InvitationContent() {
+  const params = useParams();
+  const slug = (params?.slug as string) || '';
   const searchParams = useSearchParams();
   const guestName = searchParams.get('to') || 'Tamu Undangan';
 
+  const [invitationData, setInvitationData] = useState<FullWeddingInvitationPayload | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    let isMounted = true;
+    getWeddingInvitationBySlug(slug).then((data) => {
+      if (isMounted) {
+        setInvitationData(data);
+        setIsLoading(false);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [slug]);
+
+  const weddingId = invitationData?.weddingId || mockWedding.id;
   const [isOpen, setIsOpen] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [copiedBank, setCopiedBank] = useState(false);
@@ -33,7 +72,59 @@ function InvitationContent() {
   const [paxCount, setPaxCount] = useState(2);
   const [senderName, setSenderName] = useState(guestName !== 'Tamu Undangan' ? guestName : '');
   const [messageText, setMessageText] = useState('');
-  const [wishesList, setWishesList] = useState<Wish[]>(mockWishes);
+  const [wishesList, setWishesList] = useState<Wish[]>(() => getStoredWeddingData(weddingId).wishes);
+
+  // Sync wishes across tabs and sessions
+  useEffect(() => {
+    const refreshWishes = () => {
+      const stored = getStoredWeddingData(weddingId);
+      setWishesList(stored.wishes);
+    };
+
+    let bc: BroadcastChannel | null = null;
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      bc = new BroadcastChannel('restukisah_sync');
+      bc.onmessage = () => refreshWishes();
+    }
+
+    const handleSync = () => refreshWishes();
+    window.addEventListener('restukisah_sync_event', handleSync);
+
+    return () => {
+      if (bc) bc.close();
+      window.removeEventListener('restukisah_sync_event', handleSync);
+    };
+  }, [weddingId]);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-[#FAF8F5] flex items-center justify-center font-serif text-[#8C6D46] font-bold">
+        Memuat Undangan...
+      </div>
+    );
+  }
+
+  // Jika tema undangan adalah Jawa Keraton
+  if (invitationData?.templateSettings?.themeId === 'jawa_parchment' || slug === 'jawa' || slug === 'miko-angela') {
+    return (
+      <JavaneseParchmentTemplate
+        invitationData={invitationData || undefined}
+        guestName={guestName}
+        wishes={wishesList.map(w => ({
+          id: w.id,
+          senderName: w.sender_name,
+          message: w.message,
+          timestamp: 'Baru saja'
+        }))}
+        onRsvpSubmit={async (data) => {
+          await submitRsvpAction(weddingId, data.name, data.attendance === 'hadir' ? 'attending' : 'declined', data.pax, data.message);
+        }}
+        onAddWish={async (wish) => {
+          await submitWishAction(weddingId, wish.senderName, wish.message);
+        }}
+      />
+    );
+  }
 
   const handleOpenEnvelope = () => {
     setIsOpen(true);
@@ -46,20 +137,21 @@ function InvitationContent() {
     setTimeout(() => setCopiedBank(false), 2000);
   };
 
-  const handleSubmitWish = (e: React.FormEvent) => {
+  const handleSubmitWish = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!messageText.trim()) return;
 
-    const newWish: Wish = {
-      id: `wsh-${Date.now()}`,
-      wedding_id: mockWedding.id,
-      sender_name: senderName || 'Sahabat Mempelai',
-      relationship: 'Tamu Undangan',
-      message: messageText,
-      created_at: new Date().toISOString(),
-    };
+    const currentSender = senderName.trim() || guestName || 'Sahabat Mempelai';
+    
+    // 1. Simpan Wish
+    const wishResult = await submitWishAction(weddingId, currentSender, messageText);
+    
+    // 2. Simpan RSVP
+    await submitRsvpAction(weddingId, currentSender, rsvpStatus, paxCount, messageText);
 
-    setWishesList([newWish, ...wishesList]);
+    if (wishResult.wish) {
+      setWishesList(prev => [wishResult.wish, ...prev.filter(w => w.id !== wishResult.wish.id)]);
+    }
     setMessageText('');
 
     confetti({

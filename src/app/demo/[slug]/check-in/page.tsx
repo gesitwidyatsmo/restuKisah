@@ -1,68 +1,91 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { 
   QrCode, 
   CheckCircle2, 
   AlertCircle, 
   ArrowLeft, 
-  Camera
+  Camera,
+  RefreshCw
 } from 'lucide-react';
-import { mockGuests, mockWedding } from '@/lib/mock-data';
+import { mockWedding } from '@/lib/mock-data';
 import { Guest } from '@/types/database';
+import { getStoredWeddingData, checkInGuestAction } from '@/lib/wedding-data-service';
 
 export default function CheckInScannerPage() {
-  const [guests, setGuests] = useState<Guest[]>(mockGuests);
+  const weddingId = mockWedding.id;
+  const [weddingInfo, setWeddingInfo] = useState(mockWedding);
+  const [guests, setGuests] = useState<Guest[]>(() => getStoredWeddingData(weddingId).guests);
   const [inputToken, setInputToken] = useState('');
   const [lastScannedGuest, setLastScannedGuest] = useState<Guest | null>(null);
   const [scanMessage, setScanMessage] = useState<{ type: 'success' | 'error' | 'already'; text: string } | null>(null);
 
-  const handleScanToken = (tokenToScan: string) => {
+  const refreshGuests = useCallback(() => {
+    const currentData = getStoredWeddingData(weddingId);
+    setGuests(currentData.guests);
+    setWeddingInfo(currentData.wedding);
+  }, [weddingId]);
+
+  useEffect(() => {
+    refreshGuests();
+
+    // 1. BroadcastChannel listener
+    let bc: BroadcastChannel | null = null;
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      bc = new BroadcastChannel('restukisah_sync');
+      bc.onmessage = (event) => {
+        if (!event.data?.weddingId || event.data.weddingId === weddingId) {
+          refreshGuests();
+        }
+      };
+    }
+
+    // 2. CustomEvent listener
+    const handleSync = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      if (!customEvent.detail?.weddingId || customEvent.detail.weddingId === weddingId) {
+        refreshGuests();
+      }
+    };
+    window.addEventListener('restukisah_sync_event', handleSync);
+
+    return () => {
+      if (bc) bc.close();
+      window.removeEventListener('restukisah_sync_event', handleSync);
+    };
+  }, [weddingId, refreshGuests]);
+
+  const handleScanToken = async (tokenToScan: string) => {
     const token = tokenToScan.trim();
     if (!token) return;
 
-    const foundGuest = guests.find(g => g.qr_token.toLowerCase() === token.toLowerCase());
+    const result = await checkInGuestAction(weddingId, token);
 
-    if (!foundGuest) {
-      setScanMessage({ type: 'error', text: 'QR Token Tidak Valid! Tamu tidak terdaftar dalam database.' });
-      setLastScannedGuest(null);
-      return;
-    }
-
-    if (foundGuest.is_checked_in) {
-      setScanMessage({ 
-        type: 'already', 
-        text: `Tamu "${foundGuest.name}" SUDAH CHECK-IN sebelumnya pada ${foundGuest.checked_in_at ? new Date(foundGuest.checked_in_at).toLocaleTimeString('id-ID') : 'pagi hari'}.` 
-      });
-      setLastScannedGuest(foundGuest);
-      return;
-    }
-
-    const updated = guests.map(g => {
-      if (g.id === foundGuest.id) {
-        return {
-          ...g,
-          is_checked_in: true,
-          checked_in_at: new Date().toISOString()
-        };
+    if (!result.success) {
+      if (result.already && result.guest) {
+        setScanMessage({ type: 'already', text: result.message });
+        setLastScannedGuest(result.guest);
+      } else {
+        setScanMessage({ type: 'error', text: result.message });
+        setLastScannedGuest(null);
       }
-      return g;
-    });
+      return;
+    }
 
-    setGuests(updated);
-    setLastScannedGuest({ ...foundGuest, is_checked_in: true, checked_in_at: new Date().toISOString() });
-    setScanMessage({ 
-      type: 'success', 
-      text: `Presensi Berhasil! Silakan persilakan ${foundGuest.name} masuk & serahkan souvenir.` 
-    });
+    if (result.guest) {
+      setLastScannedGuest(result.guest);
+      setScanMessage({ type: 'success', text: result.message });
+    }
     setInputToken('');
+    refreshGuests();
   };
 
   const totalGuests = guests.length;
   const checkedInCount = guests.filter(g => g.is_checked_in).length;
   const totalCheckedInPax = guests.filter(g => g.is_checked_in)
-    .reduce((acc, curr) => acc + (curr.rsvp?.confirmed_pax || curr.allocated_pax), 0);
+    .reduce((acc, curr) => acc + (curr.rsvp?.confirmed_pax || curr.allocated_pax || 1), 0);
 
   return (
     <div className="min-h-screen bg-[#FAF8F5] text-[#1C1917] p-3.5 sm:p-6 lg:p-8 overflow-x-hidden">
@@ -78,14 +101,14 @@ export default function CheckInScannerPage() {
           </Link>
 
           <span className="text-[11px] sm:text-xs font-bold px-3 py-1 rounded-full bg-purple-200 border border-[#1C1917] text-purple-900">
-            Meja Resepsi
+            Meja Resepsi Live
           </span>
         </div>
 
         {/* Realtime Attendance Header Card */}
         <div className="bg-white border-2 sm:border-3 border-[#1C1917] rounded-2xl sm:rounded-3xl p-5 sm:p-6 shadow-hard sm:shadow-hard-lg text-center">
           <h1 className="font-serif text-xl sm:text-3xl font-bold text-[#1C1917]">
-            Meja Resepsi: {mockWedding.bride_nickname} & {mockWedding.groom_nickname}
+            Meja Resepsi: {weddingInfo.bride_nickname} & {weddingInfo.groom_nickname}
           </h1>
           <p className="text-xs text-stone-600 mt-1">
             Pindai QR Code tamu dari layar smartphone mereka untuk validasi kehadiran.

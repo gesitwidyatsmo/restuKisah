@@ -51,13 +51,13 @@ export default function LandingPage() {
 
           <div className="hidden sm:flex items-center gap-3">
             <Link
-              href="/dashboard"
+              href="/login"
               className="px-4 py-2 text-xs sm:text-sm font-bold bg-white text-[#1C1917] border-2 border-[#1C1917] rounded-xl shadow-hard-sm btn-pressable min-h-[44px] flex items-center"
             >
               Masuk
             </Link>
             <Link
-              href="/dashboard"
+              href="/register"
               className="px-4 sm:px-5 py-2 sm:py-2.5 text-xs sm:text-sm font-bold bg-rose-300 text-[#1C1917] border-2 border-[#1C1917] rounded-xl shadow-hard btn-pressable flex items-center gap-2 min-h-[44px]"
             >
               <span>Mulai Rencanakan</span>
@@ -111,13 +111,13 @@ export default function LandingPage() {
 
             <div className="pt-2 border-t border-stone-200 flex flex-col gap-2">
               <Link
-                href="/dashboard"
+                href="/login"
                 className="w-full py-2.5 text-center text-xs font-bold bg-white text-[#1C1917] border-2 border-[#1C1917] rounded-xl shadow-hard-sm"
               >
                 Masuk Akun
               </Link>
               <Link
-                href="/dashboard"
+                href="/register"
                 className="w-full py-2.5 text-center text-xs font-bold bg-rose-400 text-[#1C1917] border-2 border-[#1C1917] rounded-xl shadow-hard-sm"
               >
                 Mulai Rencanakan Gratis
@@ -151,7 +151,7 @@ export default function LandingPage() {
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3.5 sm:gap-4 mb-10 sm:mb-14">
               <Link
-                href="/dashboard"
+                href="/register"
                 className="w-full sm:w-auto px-7 py-3.5 sm:py-4 text-sm sm:text-base font-bold bg-rose-400 text-[#1C1917] border-2 border-[#1C1917] rounded-2xl shadow-hard hover:shadow-hard-lg btn-pressable flex items-center justify-center gap-3 text-center min-h-[48px]"
               >
                 <span>Buka Dashboard Pernikahan</span>
@@ -421,14 +421,14 @@ export default function LandingPage() {
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link
-                href="/dashboard"
+                href="/register"
                 className="w-full sm:w-auto px-6 py-3.5 text-xs sm:text-sm font-bold bg-rose-400 text-[#1C1917] border-2 border-[#1C1917] rounded-xl shadow-hard btn-pressable flex items-center justify-center gap-2 min-h-[44px]"
               >
                 <span>Mulai Buat Proyek Pernikahan</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
-                href="/dashboard"
+                href="/login"
                 className="w-full sm:w-auto px-6 py-3.5 text-xs sm:text-sm font-bold bg-white text-[#1C1917] border-2 border-[#1C1917] rounded-xl shadow-hard-sm btn-pressable min-h-[44px] flex items-center justify-center"
               >
                 Masuk Akun Catin / WO
@@ -454,6 +454,8 @@ export default function LandingPage() {
             <Link href="/dashboard/budget" className="hover:text-rose-600 min-h-[44px] flex items-center">Kalkulator Anggaran</Link>
             <Link href="/dashboard/tamu" className="hover:text-rose-600 min-h-[44px] flex items-center">Buku Tamu QR</Link>
             <Link href="/dashboard" className="hover:text-rose-600 min-h-[44px] flex items-center">Dashboard</Link>
+            <Link href="/privacy" className="hover:text-rose-600 min-h-[44px] flex items-center">Kebijakan Privasi</Link>
+            <Link href="/terms" className="hover:text-rose-600 min-h-[44px] flex items-center">Syarat & Ketentuan</Link>
           </div>
         </div>
       </footer>

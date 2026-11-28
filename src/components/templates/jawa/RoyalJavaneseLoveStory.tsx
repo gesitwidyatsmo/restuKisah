@@ -69,8 +69,8 @@ export default function RoyalJavaneseLoveStory({
 	],
 	backgroundImage = '/templates/jawa/story/bg-batik-dark.webp',
 	topCrestImage = '/templates/jawa/common/crest-wood-gold.webp',
-	topGarlandLeftImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
-	topGarlandRightImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
+	topGarlandLeftImage,
+	topGarlandRightImage,
 	headerDividerImage = '/templates/jawa/common/divider-gold-floral.webp',
 	archFrameImage = '/templates/jawa/story/arch-frame.webp',
 	badgeFrameImage = '/templates/jawa/story/badge-step.webp',
@@ -129,33 +129,37 @@ export default function RoyalJavaneseLoveStory({
 				/>
 			</div>
 
-			{/* Top Cascading Jasmine Garlands */}
-			<motion.div
-				initial={{ opacity: 0, y: -15 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true }}
-				transition={{ duration: 0.8 }}
-				className="absolute top-0 left-3 sm:left-4 w-12 sm:w-14 pointer-events-none z-20"
-			>
-				<img
-					src={topGarlandLeftImage}
-					alt="Jasmine Garland Left"
-					className="w-full h-auto object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.7)]"
-				/>
-			</motion.div>
-			<motion.div
-				initial={{ opacity: 0, y: -15 }}
-				whileInView={{ opacity: 1, y: 0 }}
-				viewport={{ once: true }}
-				transition={{ duration: 0.8 }}
-				className="absolute top-0 right-3 sm:right-4 w-12 sm:w-14 pointer-events-none z-20 scale-x-[-1]"
-			>
-				<img
-					src={topGarlandRightImage}
-					alt="Jasmine Garland Right"
-					className="w-full h-auto object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.7)]"
-				/>
-			</motion.div>
+			{/* Top Cascading Jasmine Garlands (Optional) */}
+			{topGarlandLeftImage && (
+				<motion.div
+					initial={{ opacity: 0, y: -15 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.8 }}
+					className="absolute top-0 left-3 sm:left-4 w-12 sm:w-14 pointer-events-none z-20"
+				>
+					<img
+						src={topGarlandLeftImage}
+						alt="Jasmine Garland Left"
+						className="w-full h-auto object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.7)]"
+					/>
+				</motion.div>
+			)}
+			{topGarlandRightImage && (
+				<motion.div
+					initial={{ opacity: 0, y: -15 }}
+					whileInView={{ opacity: 1, y: 0 }}
+					viewport={{ once: true }}
+					transition={{ duration: 0.8 }}
+					className="absolute top-0 right-3 sm:right-4 w-12 sm:w-14 pointer-events-none z-20 scale-x-[-1]"
+				>
+					<img
+						src={topGarlandRightImage}
+						alt="Jasmine Garland Right"
+						className="w-full h-auto object-contain filter drop-shadow-[0_4px_8px_rgba(0,0,0,0.7)]"
+					/>
+				</motion.div>
+			)}
 
 			{/* ----------------------------------------------------------------- */}
 			{/* 2. SECTION HEADER: OUR LOVE STORY & CREST                         */}

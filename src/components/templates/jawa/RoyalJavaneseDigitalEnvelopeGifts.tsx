@@ -268,8 +268,8 @@ export default function RoyalJavaneseDigitalEnvelopeGifts({
 	confirmationWaText = 'Halo Raden Bramantyo & Putri Sekar Ayu, saya berkenan memberikan tanda kasih untuk pernikahan kalian...',
 
 	backgroundImage = '/templates/jawa/common/bg-cream-embossed.webp',
-	topGarlandLeftImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
-	topGarlandRightImage = '/templates/jawa/common/jasmine-cascade-hanging.webp',
+	topGarlandLeftImage,
+	topGarlandRightImage,
 	topCrestImage = '/templates/jawa/common/crest-wood-gold.webp',
 	cardFrameImage = '/templates/jawa/Ornate Golden Parchment Card.webp',
 	plaqueFrameImage = '/templates/jawa/Ornate Brown Gold Capsule Plaque.webp',
@@ -368,31 +368,35 @@ export default function RoyalJavaneseDigitalEnvelopeGifts({
 			</div>
 
 			{/* ----------------------------------------------------------------- */}
-			{/* 3. CASCADING JASMINE GARLANDS AT TOP CORNERS                      */}
+			{/* 3. CASCADING JASMINE GARLANDS AT TOP CORNERS (OPTIONAL)           */}
 			{/* ----------------------------------------------------------------- */}
 			{/* Left Hanging Jasmine Cascade */}
-			<div
-				className='absolute pointer-events-none z-20 opacity-95'
-				style={{ left: '1.5%', top: '-0.5%', width: '15%' }}>
-				<img
-					src={topGarlandLeftImage}
-					alt=''
-					aria-hidden='true'
-					className='w-full h-auto object-contain filter drop-shadow-xs'
-				/>
-			</div>
+			{topGarlandLeftImage && (
+				<div
+					className='absolute pointer-events-none z-20 opacity-95'
+					style={{ left: '1.5%', top: '-0.5%', width: '15%' }}>
+					<img
+						src={topGarlandLeftImage}
+						alt=''
+						aria-hidden='true'
+						className='w-full h-auto object-contain filter drop-shadow-xs'
+					/>
+				</div>
+			)}
 
 			{/* Right Hanging Jasmine Cascade (Mirrored) */}
-			<div
-				className='absolute pointer-events-none z-20 opacity-95 scale-x-[-1]'
-				style={{ right: '1.5%', top: '-0.5%', width: '15%' }}>
-				<img
-					src={topGarlandRightImage}
-					alt=''
-					aria-hidden='true'
-					className='w-full h-auto object-contain filter drop-shadow-xs'
-				/>
-			</div>
+			{topGarlandRightImage && (
+				<div
+					className='absolute pointer-events-none z-20 opacity-95 scale-x-[-1]'
+					style={{ right: '1.5%', top: '-0.5%', width: '15%' }}>
+					<img
+						src={topGarlandRightImage}
+						alt=''
+						aria-hidden='true'
+						className='w-full h-auto object-contain filter drop-shadow-xs'
+					/>
+				</div>
+			)}
 
 			{/* ----------------------------------------------------------------- */}
 			{/* 4. SECTION HEADER: CREST + "A Gift of Blessings" + SUBTITLES      */}

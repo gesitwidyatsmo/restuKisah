@@ -150,26 +150,6 @@ export default function RoyalJavaneseHeroCountdown({
 			{/* 2. MAIN PORTRAIT: COUPLE, BAROQUE ARCH FRAME & FLORAL ORNAMENTS   */}
 			{/* ----------------------------------------------------------------- */}
 			<div className='relative z-20 w-[94%] max-w-[430px] mx-auto mt-3 sm:mt-4 aspect-[1312/1199]'>
-				{/* Top Hanging Jasmine Garlands (Framing Upper Arch Shoulders) */}
-				<div
-					className='absolute pointer-events-none z-30 opacity-95'
-					style={{ left: '1%', top: '-2.5%', width: '18%' }}>
-					<img
-						src='/templates/jawa/hero/jasmine-cascade-hanging.webp'
-						alt=''
-						className='w-full h-auto object-contain filter drop-shadow-xs'
-					/>
-				</div>
-				<div
-					className='absolute pointer-events-none z-30 opacity-95 scale-x-[-1]'
-					style={{ right: '1%', top: '-2.5%', width: '18%' }}>
-					<img
-						src='/templates/jawa/hero/jasmine-cascade-hanging.webp'
-						alt=''
-						className='w-full h-auto object-contain filter drop-shadow-xs'
-					/>
-				</div>
-
 				{/* Layer 1: Inner Arch Mask + Warm Studio Bokeh Backdrop + Couple Portrait */}
 				<div
 					className='absolute z-0 overflow-hidden'
