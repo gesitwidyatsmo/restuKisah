@@ -9,6 +9,7 @@ import {
   getKuaRecommendedDeadline,
   getWeddingCountdownParts,
 } from '@/lib/wedding-data-service';
+import { getClientActionOrigin } from '@/lib/auth/validation';
 import {
   Calendar,
   FileText,
@@ -51,10 +52,7 @@ export default function DashboardOverviewPage() {
   const kuaDeadline = getKuaRecommendedDeadline(wedding.wedding_date);
 
   const handleCopyLink = () => {
-    const origin =
-      typeof window !== 'undefined'
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_SITE_URL || 'https://restukisah.id';
+    const origin = getClientActionOrigin();
     void navigator.clipboard.writeText(`${origin}/${wedding.slug}`);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);

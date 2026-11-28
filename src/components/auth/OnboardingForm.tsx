@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useActionState } from 'react';
+import { useState, useEffect, useActionState, useSyncExternalStore } from 'react';
 import {
   AlertCircle,
   ArrowRight,
@@ -17,7 +17,9 @@ import {
   createWeddingOnboardingAction,
   type OnboardingActionState,
 } from '@/app/actions/onboarding';
-import { normalizeSlug } from '@/lib/auth/validation';
+import { getSiteDisplayHost, normalizeSlug } from '@/lib/auth/validation';
+
+const emptySubscribe = () => () => {};
 
 interface OnboardingFormProps {
   userName: string;
@@ -41,6 +43,15 @@ export default function OnboardingForm({ userName }: OnboardingFormProps) {
     available?: boolean;
     message?: string;
   }>({ checking: false });
+
+  const displayHost = useSyncExternalStore(
+    emptySubscribe,
+    () =>
+      getSiteDisplayHost(
+        typeof window !== 'undefined' ? window.location.origin : undefined
+      ),
+    () => getSiteDisplayHost()
+  );
 
   const [state, formAction, isPending] = useActionState<
     OnboardingActionState | undefined,
@@ -77,13 +88,13 @@ export default function OnboardingForm({ userName }: OnboardingFormProps) {
         checking: false,
         available: res.available,
         message: res.available
-          ? `Tersedia: restukisah.id/${res.slug}`
+          ? `Tersedia: ${displayHost}/${res.slug}`
           : res.error,
       });
     }, 350);
 
     return () => clearTimeout(timer);
-  }, [slug]);
+  }, [slug, displayHost]);
 
   const minDate = new Date().toISOString().split('T')[0];
 
@@ -308,7 +319,7 @@ export default function OnboardingForm({ userName }: OnboardingFormProps) {
               </span>
             ) : (
               <span className="text-stone-500">
-                Pratinjau URL: restukisah.id/{slug || 'nama-pasangan'}
+                Pratinjau URL: {displayHost}/{slug || 'nama-pasangan'}
               </span>
             )}
           </div>

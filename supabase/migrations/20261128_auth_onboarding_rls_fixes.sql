@@ -191,8 +191,30 @@ CREATE TRIGGER on_wedding_created
   AFTER INSERT ON public.weddings
   FOR EACH ROW EXECUTE FUNCTION public.seed_default_wedding_data();
 
--- 6. PERBAIKAN RLS POLICIES (PROFILES, WEDDING_MEMBERS, RSVPS & TABEL TEMPLATE)
+-- 6. PERBAIKAN RLS POLICIES (PROFILES, WEDDINGS, WEDDING_MEMBERS, RSVPS & TABEL TEMPLATE)
 DO $$ BEGIN
+  -- 6.0 Weddings
+  DROP POLICY IF EXISTS "Members can view weddings" ON public.weddings;
+  CREATE POLICY "Members can view weddings"
+    ON public.weddings FOR SELECT
+    USING (is_wedding_member(id));
+
+  DROP POLICY IF EXISTS "Owners can update weddings" ON public.weddings;
+  CREATE POLICY "Owners can update weddings"
+    ON public.weddings FOR UPDATE
+    USING (owner_id = auth.uid())
+    WITH CHECK (owner_id = auth.uid());
+
+  DROP POLICY IF EXISTS "Authenticated users can create wedding" ON public.weddings;
+  CREATE POLICY "Authenticated users can create wedding"
+    ON public.weddings FOR INSERT
+    WITH CHECK (auth.uid() = owner_id);
+
+  DROP POLICY IF EXISTS "Public can view weddings by slug" ON public.weddings;
+  CREATE POLICY "Public can view weddings by slug"
+    ON public.weddings FOR SELECT
+    USING (status != 'archived');
+
   -- 6.1 Profiles
   DROP POLICY IF EXISTS "Users can manage own profile" ON public.profiles;
   CREATE POLICY "Users can manage own profile"
@@ -295,5 +317,59 @@ DO $$ BEGIN
     CREATE POLICY "Members can view gift confirmations"
       ON public.wedding_gift_confirmations FOR SELECT
       USING (is_wedding_member(wedding_id));
+  END IF;
+END $$;
+
+-- 7. HAK AKSES SCHEMA, SEQUENCES & TABEL (MENCEGAH "permission denied for table weddings")
+GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO anon, authenticated, service_role;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO service_role;
+
+-- Tabel inti aplikasi (tetap dibatasi oleh RLS per akun / wedding_members)
+GRANT SELECT, INSERT, UPDATE ON TABLE public.profiles TO authenticated;
+GRANT SELECT, INSERT, UPDATE ON TABLE public.weddings TO authenticated;
+GRANT SELECT ON TABLE public.weddings TO anon;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.wedding_members TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.admin_documents TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.checklist_items TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.budget_items TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.payment_milestones TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.guests TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.rsvps TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.wishes TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.rundown_items TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.invitation_settings TO authenticated;
+
+-- Akses minimal untuk tamu undangan publik (anon)
+GRANT SELECT ON TABLE public.guests TO anon;
+GRANT SELECT, INSERT, UPDATE ON TABLE public.rsvps TO anon;
+GRANT SELECT, INSERT ON TABLE public.wishes TO anon;
+GRANT SELECT ON TABLE public.invitation_settings TO anon;
+
+-- Tabel template relasional (jika migrasi 20261126 sudah dijalankan)
+DO $$
+DECLARE
+  v_tbl TEXT;
+BEGIN
+  FOREACH v_tbl IN ARRAY ARRAY[
+    'public.wedding_template_settings',
+    'public.wedding_couples',
+    'public.wedding_events',
+    'public.wedding_stories',
+    'public.wedding_galleries',
+    'public.wedding_payment_methods',
+    'public.wedding_guest_guides'
+  ]
+  LOOP
+    IF to_regclass(v_tbl) IS NOT NULL THEN
+      EXECUTE format('GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE %s TO authenticated', v_tbl);
+      EXECUTE format('GRANT SELECT ON TABLE %s TO anon', v_tbl);
+    END IF;
+  END LOOP;
+
+  IF to_regclass('public.wedding_gift_confirmations') IS NOT NULL THEN
+    EXECUTE 'GRANT SELECT, INSERT, UPDATE, DELETE ON TABLE public.wedding_gift_confirmations TO authenticated';
+    EXECUTE 'GRANT INSERT ON TABLE public.wedding_gift_confirmations TO anon';
   END IF;
 END $$;

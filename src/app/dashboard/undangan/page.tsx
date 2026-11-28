@@ -11,7 +11,7 @@ import {
   saveWeddingInvitationData,
 } from '@/lib/invitation-service';
 import { ParticleEffectType } from '@/components/effects/FallingParticlesCanvas';
-import { normalizeIndonesianPhone } from '@/lib/auth/validation';
+import { getClientActionOrigin, normalizeIndonesianPhone } from '@/lib/auth/validation';
 import {
   Sparkles,
   ExternalLink,
@@ -70,10 +70,7 @@ export default function UndanganSettingsPage() {
   }, [wedding]);
 
   const handleCopyLink = () => {
-    const origin =
-      typeof window !== 'undefined'
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_SITE_URL || 'https://restukisah.id';
+    const origin = getClientActionOrigin();
     void navigator.clipboard.writeText(`${origin}/${formData.slug || wedding.slug}`);
     setCopiedLink(true);
     setTimeout(() => setCopiedLink(false), 2000);

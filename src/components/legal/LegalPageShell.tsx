@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, CheckCircle2, Globe, Heart, ShieldCheck } from 'lucide-react';
+import { getSiteDisplayHost, getSiteOrigin } from '@/lib/auth/validation';
 
 export interface LegalSection {
   id: string;
@@ -27,6 +28,8 @@ export default function LegalPageShell({
   activeRoute,
   sections,
 }: LegalPageShellProps) {
+  const siteOrigin = getSiteOrigin();
+  const siteHost = getSiteDisplayHost();
   const siblingHref = activeRoute === 'privacy' ? '/terms' : '/privacy';
   const siblingLabel =
     activeRoute === 'privacy' ? 'Syarat & Ketentuan' : 'Kebijakan Privasi';
@@ -91,7 +94,7 @@ export default function LegalPageShell({
             </span>
             <span className="inline-flex items-center gap-1.5">
               <Globe className="w-3.5 h-3.5 text-rose-600" />
-              Domain resmi: https://www.restukisah.my.id
+              Domain resmi: {siteOrigin}
             </span>
           </div>
 
@@ -191,7 +194,7 @@ export default function LegalPageShell({
       {/* Footer */}
       <footer className="bg-[#FAF8F5] border-t-2 border-stone-300 py-6">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-semibold text-stone-600">
-          <span>© {new Date().getFullYear()} RestuKisah (restukisah.my.id). All rights reserved.</span>
+          <span>© {new Date().getFullYear()} RestuKisah ({siteHost}). All rights reserved.</span>
           <div className="flex items-center gap-4">
             <Link
               href="/privacy"

@@ -6,7 +6,7 @@ import Header from '@/components/dashboard/Header';
 import { useDashboard } from '@/components/dashboard/DashboardContext';
 import { Guest, GuestCategory } from '@/types/database';
 import { formatWeddingDateIndo } from '@/lib/wedding-data-service';
-import { normalizeIndonesianPhone } from '@/lib/auth/validation';
+import { getClientActionOrigin, normalizeIndonesianPhone } from '@/lib/auth/validation';
 import {
   Users,
   MessageCircle,
@@ -71,10 +71,7 @@ export default function TamuPage() {
   const formattedEventDate = formatWeddingDateIndo(wedding.wedding_date, 'long');
 
   const generateWhatsAppUrl = (guest: Guest) => {
-    const origin =
-      typeof window !== 'undefined'
-        ? window.location.origin
-        : process.env.NEXT_PUBLIC_SITE_URL || 'https://restukisah.id';
+    const origin = getClientActionOrigin();
     const inviteLink = `${origin}/${wedding.slug}?to=${encodeURIComponent(guest.name)}&t=${encodeURIComponent(guest.qr_token)}`;
     const brideLabel = wedding.bride_nickname || wedding.bride_name;
     const groomLabel = wedding.groom_nickname || wedding.groom_name;

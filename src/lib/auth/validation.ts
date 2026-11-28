@@ -103,6 +103,27 @@ export function getSiteOrigin(requestOrigin?: string): string {
   return 'http://localhost:3000';
 }
 
+export function getSiteDisplayHost(runtimeOrigin?: string): string {
+  const configured = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  const candidate =
+    configured && /^https?:\/\//i.test(configured)
+      ? configured
+      : runtimeOrigin?.trim() || 'http://localhost:3000';
+
+  try {
+    return new URL(candidate).host;
+  } catch {
+    return candidate.replace(/^https?:\/\//i, '').replace(/\/+$/, '');
+  }
+}
+
+export function getClientActionOrigin(): string {
+  if (typeof window !== 'undefined' && window.location?.origin) {
+    return window.location.origin.replace(/\/+$/, '');
+  }
+  return getSiteOrigin();
+}
+
 export function mapAuthErrorToIndonesian(message: string): string {
   const lower = message.toLowerCase();
 
